@@ -1,0 +1,21 @@
+---
+- name: Fail when netdata settings is not defined or empty
+  fail:
+    msg: "netdata_settings is not defined"
+  when: "hostvars[inventory_hostname]['netdata_settings'] is not defined or (hostvars[inventory_hostname]['netdata_settings'] is not defined and hostvars[inventory_hostname]['netdata_settings'] != '')"
+- name: Make netdata folder
+  file:
+    path: "/etc/netdata"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+- name: Deploy netdata configuration
+  template:
+    src: "netdata.j2"
+    dest: "/etc/netdata/netdata.conf"
+    group: "root"
+    owner: "root"
+    mode: "0644"
+    force: "yes"
+  notify: "Restart netdata"

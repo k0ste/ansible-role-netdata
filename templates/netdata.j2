@@ -1,0 +1,48 @@
+{{ '## ' + 'netdata.conf' }}
+{{ '# ' + ansible_managed }}
+{{ '# ' + 'Do not edit manually' }}
+
+{% if netdata_settings is defined %}
+{% for n in netdata_settings %}
+{% if n.global is defined %}
+{{ '[global]' }}
+{% for ng in n.global %}
+{% for k,v in ng.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n.plugins is defined %}
+{{ '[plugins]' }}
+{% for np in n.plugins %}
+{% for k,v in np.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n.health is defined %}
+{{ '[health]' }}
+{% for nh in n.health %}
+{% for k,v in nh.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n.backend is defined %}
+{{ '[backend]' }}
+{% for nb in n.backend %}
+{% for k,v in nb.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n.registry is defined %}
+{{ '[registry]' }}
+{% for nr in n.registry %}
+{% for k,v in nr.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
