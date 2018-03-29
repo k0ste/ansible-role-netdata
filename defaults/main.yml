@@ -1,0 +1,6 @@
+---
+netdata_install_packages: 'true'
+netdata_package_state: 'present'
+netdata_enable: 'true'
+netdata_restart: 'true'
+netdata: []

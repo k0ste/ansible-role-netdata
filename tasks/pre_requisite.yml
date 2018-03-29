@@ -1,0 +1,21 @@
+---
+- assert:
+    that:
+    - "hostvars[inventory_hostname]['netdata_package_state'] in
+       ['present', 'latest']"
+    msg: "'netdata_package_state' must be in 'present' or 'latest'."
+  when:
+  - "hostvars[inventory_hostname]['netdata_package_state'] is defined"
+- name: netdata | Add the OS specific varibles
+  include_vars: "{{ hostvars[inventory_hostname]['ansible_os_family'] +
+                    '.yml' }}"
+- name: netdata | Create catalogs
+  file:
+    path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when:
+  - "hostvars[inventory_hostname]['netdata'] is defined"
+  - "hostvars[inventory_hostname]['netdata'] != ''"

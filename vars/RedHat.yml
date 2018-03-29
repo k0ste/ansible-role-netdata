@@ -1,0 +1,4 @@
+---
+netdata_dest: '/etc/netdata'
+netdata_package: 'netdata'
+netdata_service: 'netdata'

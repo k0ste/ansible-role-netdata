@@ -1,0 +1,25 @@
+---
+- name: netdata | Install the required packages in Redhat derivatives
+  yum:
+    name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
+    state: "{{ hostvars[inventory_hostname]['netdata_package_state'] |
+               default(omit) }}"
+    update_cache: "yes"
+  when:
+  - "hostvars[inventory_hostname]['ansible_os_family'] == 'RedHat'"
+- name: netdata | Install the required packages in Debian derivatives
+  apt:
+    name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
+    state: "{{ hostvars[inventory_hostname]['netdata_package_state'] |
+               default(omit) }}"
+    update_cache: "yes"
+  when:
+  - "hostvars[inventory_hostname]['ansible_os_family'] == 'Debian'"
+- name: netdata | Install the required packages in ArchLinux derivatives
+  pacman:
+    name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
+    state: "{{ hostvars[inventory_hostname]['netdata_package_state'] |
+               default(omit) }}"
+    update_cache: "yes"
+  when:
+  - "hostvars[inventory_hostname]['ansible_os_family'] == 'Archlinux'"

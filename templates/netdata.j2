@@ -2,8 +2,7 @@
 {{ '# ' + ansible_managed }}
 {{ '# ' + 'Do not edit manually' }}
 
-{% if netdata_settings is defined %}
-{% for n in netdata_settings %}
+{% for n in hostvars[inventory_hostname]['netdata'] %}
 {% if n.global is defined %}
 {{ '[global]' }}
 {% for ng in n.global %}
@@ -45,4 +44,3 @@
 {% endfor %}
 {% endif %}
 {% endfor %}
-{% endif %}

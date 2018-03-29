@@ -1,0 +1,19 @@
+---
+- name: netdata | Deploy netdata.conf
+  template:
+    src: "netdata.j2"
+    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
+              'netdata.conf' }}"
+    group: "root"
+    owner: "root"
+    mode: "0644"
+    force: "yes"
+  notify:
+  - "Restart netdata"
+- name: netdata | Enable netdata
+  service:
+    name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
+    enabled: "yes"
+  when:
+  - "hostvars[inventory_hostname]['netdata_enable'] is defined"
+  - "hostvars[inventory_hostname]['netdata_enable'] == 'true'"

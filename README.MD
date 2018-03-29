@@ -1,15 +1,12 @@
-ansible-netdata
-=================
+# ansible-netdata
 
-Role for deploy netdata configuration.
+Role for deploy `netdata` and `netdata` configuration.
 
-Ansible versions
------------------
+## Requirements
 
-Ansible 2.2 is required.
+* Ansible 2.4;
 
-Extra
-------
+## Extra
 
 netdata options is not validate and pass as-is. For all possible options
 request netdata.conf from running netdata `http://localhost:19999/netdata.conf`.
@@ -25,7 +22,17 @@ Example configuration
 
 ```yaml
 ---
-netdata_settings:
+# Install/upgrade netdata package or not.
+netdata_install_packages: 'true'
+# Enable netdata after deploy or not.
+netdata_enable: 'true'
+# Restart netdata after deploy or not.
+netdata_restart: 'true'
+# 'present' (do nothing if package is already installed) or 'latest' (always
+# upgrade to last version).
+netdata_package_state: 'latest'
+
+netdata:
 - global:
   - memory_mode: 'save'
     web_files_owner: 'root'

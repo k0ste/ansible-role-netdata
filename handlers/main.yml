@@ -1,6 +1,8 @@
 ---
 - name: Restart netdata
   systemd:
-    name: "netdata"
+    name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
     state: "restarted"
-    enabled: "yes"
+  when:
+  - "hostvars[inventory_hostname]['netdata_restart'] is defined"
+  - "hostvars[inventory_hostname]['netdata_restart'] == 'true'"
