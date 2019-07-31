@@ -50,4 +50,6 @@ netdata:
   - enabled: 'no'
 - registry:
   - enabled: 'yes'
+- statsd:
+  - enabled: 'no'
 ```

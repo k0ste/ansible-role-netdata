@@ -43,4 +43,28 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
+{% if n.web is defined %}
+{{ '[web]' }}
+{% for nw in n.web %}
+{% for k,v in nw.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n.cloud is defined %}
+{{ '[cloud]' }}
+{% for nc in n.cloud %}
+{% for k,v in nc.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n.statsd is defined %}
+{{ '[statsd]' }}
+{% for ns in n.statsd %}
+{% for k,v in ns.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
 {% endfor %}
