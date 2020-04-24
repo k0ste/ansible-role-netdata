@@ -52,4 +52,10 @@ netdata:
   - enabled: 'yes'
 - statsd:
   - enabled: 'no'
+# Special section, if lmv label assigned and another application doesn't have
+# this label, we can rename family label. Useful for work with 3rd party
+# exporters.
+- disk_family:
+  - 'dm-0'
+  - 'dm-1'
 ```

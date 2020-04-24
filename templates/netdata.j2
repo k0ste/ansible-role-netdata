@@ -67,4 +67,26 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
+{% if n.disk_family is defined %}
+{% for nd in n.disk_family %}
+{{ '[disk.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_ops.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_backlog.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_util.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_iotime.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_await.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_avgsz.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_svctm.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{{ '[disk_qops.' + nd + ']' }}
+{{ '  family = ' + nd }}
+{% endfor %}
+{% endif %}
 {% endfor %}
