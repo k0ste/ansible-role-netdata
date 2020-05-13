@@ -1,0 +1,15 @@
+---
+- name: netdata | Deploy conf.d/python.d/smartd_log.conf
+  template:
+    src: "conf.d/python.d/smartd_log.j2"
+    dest: "{{ hostvars[inventory_hostname]['netdata_plugins_conf_dest'] +
+      '/python.d/smartd_log.conf' }}"
+    group: "root"
+    owner: "root"
+    mode: "0644"
+    force: "yes"
+  when:
+  - "hostvars[inventory_hostname]['netdata_plugins_settings'] is defined"
+  - "hostvars[inventory_hostname]['netdata_plugins_settings'] != ''"
+  notify:
+  - "Restart netdata"

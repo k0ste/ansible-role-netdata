@@ -8,6 +8,9 @@
     owner: "root"
     mode: "0644"
     force: "yes"
+  when:
+  - "hostvars[inventory_hostname]['netdata_settings'] is defined"
+  - "hostvars[inventory_hostname]['netdata_settings'] != ''"
   notify:
   - "Restart netdata"
 - name: netdata | Enable netdata

@@ -33,29 +33,40 @@ netdata_restart: 'true'
 netdata_package_state: 'latest'
 
 netdata:
-- global:
-  - memory_mode: 'save'
-    web_files_owner: 'root'
-    web_files_group: 'netdata'
-    memory_deduplication_(ksm): 'no'
-    error_log: 'stderr'
-    access_log: 'none'
-- plugins:
-  - checks: 'no'
-    node.d: 'no'
-    fping: 'no'
-- health:
-  - enabled: 'no'
-- backend:
-  - enabled: 'no'
-- registry:
-  - enabled: 'yes'
-- statsd:
-  - enabled: 'no'
-# Special section, if lmv label assigned and another application doesn't have
-# this label, we can rename family label. Useful for work with 3rd party
-# exporters.
-- disk_family:
-  - 'dm-0'
-  - 'dm-1'
+# netdata.conf settings.
+- netdata_settings:
+  - global:
+    - memory_mode: 'save'
+      web_files_owner: 'root'
+      web_files_group: 'netdata'
+      memory_deduplication_(ksm): 'no'
+      error_log: 'stderr'
+      access_log: 'none'
+  - plugins:
+    - checks: 'no'
+      node.d: 'no'
+      fping: 'no'
+  - health:
+    - enabled: 'no'
+  - backend:
+    - enabled: 'no'
+  - registry:
+    - enabled: 'yes'
+  - statsd:
+    - enabled: 'no'
+  # Special section, if lmv label assigned and another application doesn't have
+  # this label, we can rename family label. Useful for work with 3rd party
+  # exporters.
+  - disk_family:
+    - 'dm-0'
+    - 'dm-1'
+# conf.d settings
+- plugins_settings:
+# pyhond.d plugins settings.
+  - python:
+# smartd_log plugin settings.
+    - smartd_log:
+      - log_path: '/var/log/smartd'
+# Age should match with smartd interval (default is 30 min).
+        age: '60'
 ```

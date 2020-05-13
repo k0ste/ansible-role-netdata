@@ -2,7 +2,7 @@
 {{ '# ' + ansible_managed }}
 {{ '# ' + 'Do not edit manually' }}
 
-{% for n in hostvars[inventory_hostname]['netdata'] %}
+{% for n in vars['netdata_settings'] %}
 {% if n.global is defined %}
 {{ '[global]' }}
 {% for ng in n.global %}

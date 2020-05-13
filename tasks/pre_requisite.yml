@@ -11,6 +11,12 @@
 - name: netdata | Add the OS specific varibles
   include_vars: "{{ hostvars[inventory_hostname]['ansible_os_family'] +
                     '.yml' }}"
+- name: netdata | Set facts about netdata role
+  set_fact:
+    netdata_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+      json_query('[].netdata_settings[]') }}"
+    netdata_plugins_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+      json_query('[].plugins_settings[]') }}"
 - name: netdata | Create catalogs
   file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"

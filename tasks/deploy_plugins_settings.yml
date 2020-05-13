@@ -1,0 +1,2 @@
+---
+- import_tasks: "conf.d/python.d/smartd_log.yml"
