@@ -2,22 +2,14 @@
 {{ '# ' + ansible_managed }}
 {{ '# ' + 'Do not edit manually' }}
 
-{% for n in vars['netdata_plugins_settings'] %}
-{% if n.python is defined and n.python != '' %}
-{% for np in n.python %}
-{% if np.smartd_log is defined and np.smartd_log != '' %}
-{% for nps in np.smartd_log %}
+{% for ns in vars['netdata_plugins_settings']['smartd_log'] %}
 {% if loop.first %}
 {{ 'local:' }}
 {% endif %}
-{% if nps.log_path is defined and nps.log_path != '' %}
-{{ '  log_path: ' + nps.log_path }}
+{% if ns.log_path is defined and ns.log_path != '' %}
+{{ '  log_path: ' + ns.log_path }}
 {% endif %}
-{% if nps.age is defined and nps.age != '' %}
-{{ '  age: ' + nps.age }}
-{% endif %}
-{% endfor %}
-{% endif %}
-{% endfor %}
+{% if ns.age is defined and ns.age != '' %}
+{{ '  age: ' + ns.age }}
 {% endif %}
 {% endfor %}

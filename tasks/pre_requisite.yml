@@ -15,8 +15,12 @@
   set_fact:
     netdata_settings: "{{ hostvars[inventory_hostname]['netdata'] |
       json_query('[].netdata_settings[]') }}"
-    netdata_plugins_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+    netdata_plugins_settings:
+      "{{ hostvars[inventory_hostname]['netdata'] |
       json_query('[].plugins_settings[]') }}"
+    netdata_plugins_settings_python:
+      "{{ hostvars[inventory_hostname]['netdata'] |
+      json_query('[].plugins_settings[].python[] | [0]') }}"
 - name: netdata | Create catalogs
   file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"

@@ -69,4 +69,7 @@ netdata:
       - log_path: '/var/log/smartd'
 # Age should match with smartd interval (default is 30 min).
         age: '60'
+# nginx plugin settings.
+      nginx:
+      - url: 'http://127.0.0.1/nginx_status'
 ```

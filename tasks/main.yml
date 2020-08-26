@@ -5,7 +5,7 @@
   - "hostvars[inventory_hostname]['netdata_install_packages'] is defined"
   - "hostvars[inventory_hostname]['netdata_install_packages'] == 'true'"
 - import_tasks: "deploy_netdata.yml"
-- import_tasks: "deploy_plugins_settings.yml"
+- include_tasks: "deploy_plugins_settings.yml"
   when:
   - "vars['netdata_plugins_settings'] is defined"
   - "vars['netdata_plugins_settings'] != []"
