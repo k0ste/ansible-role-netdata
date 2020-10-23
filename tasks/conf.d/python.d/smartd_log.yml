@@ -1,6 +1,6 @@
 ---
 - name: netdata | Deploy conf.d/python.d/smartd_log.conf
-  template:
+  ansible.builtin.template:
     src: "conf.d/python.d/smartd_log.j2"
     dest: "{{ hostvars[inventory_hostname]['netdata_plugins_conf_dest'] +
       '/python.d/smartd_log.conf' }}"

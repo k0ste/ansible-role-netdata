@@ -1,8 +1,14 @@
 ---
 - name: Restart netdata
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
     state: "restarted"
   when:
-  - "hostvars[inventory_hostname]['netdata_restart'] is defined"
-  - "hostvars[inventory_hostname]['netdata_restart'] == 'true'"
+  - "hostvars[inventory_hostname]['netdata'] is defined"
+  - "hostvars[inventory_hostname]['netdata'] != ''"
+  - "hostvars[inventory_hostname]['netdata'] |
+     json_query(vars['netdata_restart']) is defined"
+  - "hostvars[inventory_hostname]['netdata'] |
+     json_query(vars['netdata_restart']) == 'true'"
+  vars:
+    netdata_restart: "[] | map(&restart || 'false', @) | [0]"

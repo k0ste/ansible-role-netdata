@@ -2,7 +2,7 @@
 {{ '# ' + ansible_managed }}
 {{ '# ' + 'Do not edit manually' }}
 
-{% for ns in vars['netdata_plugins_settings']['smartd_log'] %}
+{% for ns in vars['netdata_plugins_settings_python']['smartd_log'] %}
 {% if loop.first %}
 {{ 'local:' }}
 {% endif %}

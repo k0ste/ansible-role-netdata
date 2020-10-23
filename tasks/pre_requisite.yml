@@ -1,6 +1,6 @@
 ---
 - name: netdata | Assert that netdata package state in valid value
-  assert:
+  ansible.builtin.assert:
     that:
     - "hostvars[inventory_hostname]['netdata_package_state'] in
        ['present', 'latest']"
@@ -12,17 +12,16 @@
   include_vars: "{{ hostvars[inventory_hostname]['ansible_os_family'] +
                     '.yml' }}"
 - name: netdata | Set facts about netdata role
-  set_fact:
+  ansible.builtin.set_fact:
     netdata_settings: "{{ hostvars[inventory_hostname]['netdata'] |
-      json_query('[].netdata_settings[]') }}"
-    netdata_plugins_settings:
-      "{{ hostvars[inventory_hostname]['netdata'] |
-      json_query('[].plugins_settings[]') }}"
-    netdata_plugins_settings_python:
-      "{{ hostvars[inventory_hostname]['netdata'] |
-      json_query('[].plugins_settings[].python[] | [0]') }}"
+      json_query('[].settings[]') }}"
+    netdata_plugins_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+      json_query('[].settings[].plugins_settings[]') }}"
+    netdata_plugins_settings_python: "{{
+      hostvars[inventory_hostname]['netdata'] |
+      json_query('[].settings[].plugins_settings[].python[] | [0]') }}"
 - name: netdata | Create catalogs
-  file:
+  ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
     state: "directory"
     owner: "root"

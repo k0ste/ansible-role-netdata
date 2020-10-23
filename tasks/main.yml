@@ -2,8 +2,14 @@
 - import_tasks: "pre_requisite.yml"
 - include_tasks: "packages.yml"
   when:
-  - "hostvars[inventory_hostname]['netdata_install_packages'] is defined"
-  - "hostvars[inventory_hostname]['netdata_install_packages'] == 'true'"
+  - "hostvars[inventory_hostname]['netdata'] is defined"
+  - "hostvars[inventory_hostname]['netdata'] != ''"
+  - "hostvars[inventory_hostname]['netdata'] |
+     json_query(vars['netdata_install_package']) is defined"
+  - "hostvars[inventory_hostname]['netdata'] |
+     json_query(vars['netdata_install_package']) == 'true'"
+  vars:
+    netdata_install_package: "[] | map(&install_package || 'false', @) | [0]"
 - import_tasks: "deploy_netdata.yml"
 - include_tasks: "deploy_plugins_settings.yml"
   when:

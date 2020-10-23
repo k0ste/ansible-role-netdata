@@ -1,6 +1,6 @@
 ---
 - name: netdata | Deploy netdata.conf
-  template:
+  ansible.builtin.template:
     src: "netdata.j2"
     dest: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
               'netdata.conf' }}"
@@ -14,7 +14,7 @@
   notify:
   - "Restart netdata"
 - name: netdata | Enable netdata
-  service:
+  ansible.builtin.systemd:
     name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
     enabled: "yes"
   when:

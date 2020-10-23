@@ -22,23 +22,23 @@ Example configuration
 
 ```yaml
 ---
-# Install/upgrade netdata package or not.
-netdata_install_packages: 'true'
+netdata:
 # Enable netdata after deploy or not.
-netdata_enable: 'true'
+- enable: 'true'
 # Restart netdata after deploy or not.
-netdata_restart: 'true'
+  restart: 'true'
+# Install/upgrade netdata package or not.
+  install_package: 'true'
 # 'present' (do nothing if package is already installed) or 'latest' (always
 # upgrade to last version).
-netdata_package_state: 'latest'
-
-netdata:
+  package_state: 'latest'
 # netdata.conf settings.
-- netdata_settings:
+  settings:
   - global:
     - memory_mode: 'save'
-      web_files_owner: 'root'
-      web_files_group: 'netdata'
+      stock_config_directory: "{{ netdata_stock_config_directory | default(omit) }}"
+      web_files_owner: "{{ netdata_settings_web_files_owner | default('netdata') }}"
+      web_files_group: "{{ netdata_settings_web_files_group | default('netdata') }}"
       memory_deduplication_(ksm): 'no'
       error_log: 'stderr'
       access_log: 'none'
@@ -61,15 +61,15 @@ netdata:
     - 'dm-0'
     - 'dm-1'
 # conf.d settings
-- plugins_settings:
+  - plugins_settings:
 # pyhond.d plugins settings.
-  - python:
+    - python:
 # smartd_log plugin settings.
-    - smartd_log:
-      - log_path: '/var/log/smartd'
+      - smartd_log:
+        - log_path: '/var/log/smartd'
 # Age should match with smartd interval (default is 30 min).
-        age: '60'
+          age: '60'
 # nginx plugin settings.
-      nginx:
-      - url: 'http://127.0.0.1/nginx_status'
+        nginx:
+        - url: 'http://127.0.0.1/nginx_status'
 ```
