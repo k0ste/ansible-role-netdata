@@ -9,8 +9,8 @@
     mode: "0644"
     force: "yes"
   when:
-  - "hostvars[inventory_hostname]['netdata_settings'] is defined"
-  - "hostvars[inventory_hostname]['netdata_settings'] != ''"
+  - "vars['netdata_settings'] is defined"
+  - "vars['netdata_settings'] != []"
   notify:
   - "Restart netdata"
 - name: netdata | Enable netdata
@@ -18,5 +18,11 @@
     name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
     enabled: "yes"
   when:
-  - "hostvars[inventory_hostname]['netdata_enable'] is defined"
-  - "hostvars[inventory_hostname]['netdata_enable'] == 'true'"
+  - "hostvars[inventory_hostname]['netdata'] is defined"
+  - "hostvars[inventory_hostname]['netdata'] != ''"
+  - "hostvars[inventory_hostname]['netdata'] |
+     community.general.json_query(vars['netdata_enable']) is defined"
+  - "hostvars[inventory_hostname]['netdata'] |
+     community.general.json_query(vars['netdata_enable']) == 'true'"
+  vars:
+    netdata_enable: "[] | map(&enable || 'false', @) | [0]"
