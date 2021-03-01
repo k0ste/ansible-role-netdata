@@ -9,4 +9,4 @@
     mode: "0644"
     force: "yes"
   notify:
-  - "Restart netdata"
+    - "Restart netdata"

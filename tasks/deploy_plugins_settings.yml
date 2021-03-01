@@ -1,9 +1,9 @@
 ---
 - include_tasks: "conf.d/python.d/smartd_log.yml"
   when:
-  - "vars['netdata_plugins_settings_python']['smartd_log'] is defined"
-  - "vars['netdata_plugins_settings_python']['smartd_log'] != ''"
+    - "vars['netdata_plugins_settings_python']['smartd_log'] is defined"
+    - "vars['netdata_plugins_settings_python']['smartd_log'] != ''"
 - import_tasks: "conf.d/python.d/nginx.yml"
   when:
-  - "vars['netdata_plugins_settings_python']['nginx'] is defined"
-  - "vars['netdata_plugins_settings_python']['nginx'] != ''"
+    - "vars['netdata_plugins_settings_python']['nginx'] is defined"
+    - "vars['netdata_plugins_settings_python']['nginx'] != ''"

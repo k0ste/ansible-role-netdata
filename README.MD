@@ -4,7 +4,7 @@ Role for deploy `netdata` and `netdata` configuration.
 
 ## Requirements
 
-* Ansible 2.10+;
+* Ansible 3.0.0+;
 
 ## Extra
 
@@ -32,6 +32,9 @@ netdata:
 # 'present' (do nothing if package is already installed) or 'latest' (always
 # upgrade to last version).
   package_state: 'latest'
+# Allow use sudo for netdata service or not, see
+# https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Capabilities
+  allow_sudo: 'true'
 # netdata.conf settings.
   settings:
   - global:

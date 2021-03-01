@@ -1,5 +1,5 @@
 ---
-- name: netdata | Deploy netdata.conf
+- name: netdata | Deploy Netdata configuration
   ansible.builtin.template:
     src: "netdata.j2"
     dest: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
@@ -9,20 +9,40 @@
     mode: "0644"
     force: "yes"
   when:
-  - "vars['netdata_settings'] is defined"
-  - "vars['netdata_settings'] != []"
+    - "vars['netdata_settings'] is defined"
+    - "vars['netdata_settings'] != []"
   notify:
-  - "Restart netdata"
+    - "Restart netdata"
+- name: netdata | Deploy Netdata service configuration
+  ansible.builtin.template:
+    src: "netdata_service.j2"
+    dest: "{{ vars['netdata_systemd_dir'] + '/' +
+      hostvars[inventory_hostname]['netdata_service'] + '.conf' }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify:
+    - "Daemon reload"
+    - "Restart netdata"
+  when:
+    - "hostvars[inventory_hostname]['netdata'] is defined"
+    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] |
+       community.general.json_query(vars['netdata_allow_sudo']) is defined"
+    - "hostvars[inventory_hostname]['netdata'] |
+       community.general.json_query(vars['netdata_allow_sudo']) == 'true'"
+  vars:
+    netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"
 - name: netdata | Enable netdata
   ansible.builtin.systemd:
     name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
     enabled: "yes"
   when:
-  - "hostvars[inventory_hostname]['netdata'] is defined"
-  - "hostvars[inventory_hostname]['netdata'] != ''"
-  - "hostvars[inventory_hostname]['netdata'] |
-     community.general.json_query(vars['netdata_enable']) is defined"
-  - "hostvars[inventory_hostname]['netdata'] |
-     community.general.json_query(vars['netdata_enable']) == 'true'"
+    - "hostvars[inventory_hostname]['netdata'] is defined"
+    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] |
+       community.general.json_query(vars['netdata_enable']) is defined"
+    - "hostvars[inventory_hostname]['netdata'] |
+       community.general.json_query(vars['netdata_enable']) == 'true'"
   vars:
     netdata_enable: "[] | map(&enable || 'false', @) | [0]"

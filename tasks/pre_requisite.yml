@@ -1,6 +1,17 @@
 ---
+- name: netdata | Assert that system manager is systemd
+  ansible.builtin.assert:
+    that:
+      - "hostvars[inventory_hostname]['ansible_service_mgr'] == 'systemd'"
+    msg: "System manager is not systemd."
+    quiet: "true"
+- name: netdata | Add the OS specific varibles
+  include_vars: "{{
+    hostvars[inventory_hostname]['ansible_os_family'] + '.yml' }}"
 - name: netdata | Set facts about netdata role
   ansible.builtin.set_fact:
+    netdata_systemd_dir: "{{ '/etc/systemd/system/' +
+      hostvars[inventory_hostname]['netdata_service'] + '.service.d' }}"
     netdata_package_state: "{{ hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].package_state | [0]') }}"
     netdata_settings: "{{ hostvars[inventory_hostname]['netdata'] |
@@ -14,14 +25,11 @@
 - name: netdata | Assert that netdata package state in valid value
   ansible.builtin.assert:
     that:
-    - "vars['netdata_package_state'] in ['present', 'latest']"
+      - "vars['netdata_package_state'] in ['present', 'latest']"
     msg: "'package_state' must be in 'present' or 'latest'."
     quiet: "true"
   when:
-  - "hostvars[inventory_hostname]['netdata_package_state'] is defined"
-- name: netdata | Add the OS specific varibles
-  include_vars: "{{ hostvars[inventory_hostname]['ansible_os_family'] +
-                    '.yml' }}"
+    - "hostvars[inventory_hostname]['netdata_package_state'] is defined"
 - name: netdata | Create catalogs
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
@@ -30,5 +38,22 @@
     group: "root"
     mode: "0755"
   when:
-  - "vars['netdata_settings'] is defined"
-  - "vars['netdata_settings'] != ''"
+    - "vars['netdata_settings'] is defined"
+    - "vars['netdata_settings'] != ''"
+- name: netdata | Create override systemd service directory
+  ansible.builtin.file:
+    path: "{{ vars['netdata_systemd_dir'] }}"
+    state: "directory"
+    group: "root"
+    owner: "root"
+    mode: "0755"
+    recurse: "no"
+  when:
+    - "hostvars[inventory_hostname]['netdata'] is defined"
+    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] |
+       community.general.json_query(vars['netdata_allow_sudo']) is defined"
+    - "hostvars[inventory_hostname]['netdata'] |
+       community.general.json_query(vars['netdata_allow_sudo']) == 'true'"
+  vars:
+    netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"
