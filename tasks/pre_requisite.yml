@@ -29,7 +29,8 @@
     msg: "'package_state' must be in 'present' or 'latest'."
     quiet: "true"
   when:
-    - "hostvars[inventory_hostname]['netdata_package_state'] is defined"
+    - "vars['netdata_package_state'] is defined"
+    - "vars['netdata_package_state'] != ''"
 - name: netdata | Create catalogs
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
