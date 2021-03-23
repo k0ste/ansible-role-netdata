@@ -1,4 +1,4 @@
-# ansible-netdata
+# netdata
 
 Role for deploy `netdata` and `netdata` configuration.
 
@@ -23,11 +23,11 @@ Example configuration
 ```yaml
 ---
 netdata:
-# Enable netdata after deploy or not.
+# Enable netdata after deploy or not
 - enable: 'true'
-# Restart netdata after deploy or not.
+# Restart netdata after deploy or not
   restart: 'true'
-# Install/upgrade netdata package or not.
+# Install/upgrade netdata package or not
   install_package: 'true'
 # 'present' (do nothing if package is already installed) or 'latest' (always
 # upgrade to last version).

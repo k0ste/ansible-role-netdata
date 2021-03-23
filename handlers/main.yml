@@ -10,8 +10,8 @@
     - "hostvars[inventory_hostname]['netdata'] is defined"
     - "hostvars[inventory_hostname]['netdata'] != ''"
     - "hostvars[inventory_hostname]['netdata'] |
-       json_query(vars['netdata_restart']) is defined"
+       community.general.json_query(vars['netdata_restart']) is defined"
     - "hostvars[inventory_hostname]['netdata'] |
-       json_query(vars['netdata_restart']) == 'true'"
+       community.general.json_query(vars['netdata_restart']) == 'true'"
   vars:
     netdata_restart: "[] | map(&restart || 'false', @) | [0]"
