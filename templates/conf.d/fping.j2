@@ -4,13 +4,13 @@
 
 {% for nf in vars['netdata_plugins_settings_plugind']['fping'] %}
 {% if nf.fping is defined and nf.fping != '' %}
-{{ 'fping=' + nf.fping }}
+{{ 'fping=\"' + nf.fping + '\"' }}
 {% endif %}
 {% if nf.hosts is defined and nf.hosts != '' %}
 {% if nf.hosts is string %}
-{{ 'hosts=' + nf.hosts }}
+{{ 'hosts=\"' + nf.hosts + '\"' }}
 {% elif nf.hosts is sequence %}
-{{ 'hosts=' + nf.hosts | join(' ') }}
+{{ 'hosts=\"' ~ nf.hosts | join(' ') ~ '\"' }}
 {% endif %}
 {% endif %}
 {% if nf.update_every is defined and nf.update_every != '' %}
@@ -20,6 +20,6 @@
 {{ 'ping_every=' ~ nf.ping_every }}
 {% endif %}
 {% if nf.fping_opts is defined and nf.fping_opts != '' %}
-{{ 'fping_opts=' + nf.fping_opts }}
+{{ 'fping_opts=\"' + nf.fping_opts + '\"' }}
 {% endif %}
 {% endfor %}
