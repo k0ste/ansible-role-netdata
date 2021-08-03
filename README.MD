@@ -1,6 +1,6 @@
 # netdata
 
-Role for deploy `netdata` and `netdata` configuration.
+Role for deploy `netdata` packages and `netdata` configuration
 
 ## Requirements
 
@@ -75,4 +75,18 @@ netdata:
 # nginx plugin settings.
         nginx:
         - url: 'http://127.0.0.1/nginx_status'
+    - plugin:
+        - fping:
+            - fping: '/usr/local/bin/fping'
+# Set here all the hosts you need to ping
+              hosts:
+                - 'host1'
+                - 'host2'
+# Override the chart update frequency - the default is inherited from Netdata
+              update_every: '1'
+# Time in milliseconds (1 sec = 1000 ms) to ping the hosts
+# 200 = 5 pings per second
+              ping_every: '200'
+# Other fping options - these are the defaults
+              fping_opts: '-R -b 56 -i 1 -r 0 -t 5000'
 ```

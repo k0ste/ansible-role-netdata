@@ -1,9 +1,16 @@
 ---
-- include_tasks: "conf.d/python.d/smartd_log.yml"
+- ansible.builtin.include_tasks:
+    file: "conf.d/python.d/smartd_log.yml"
   when:
     - "vars['netdata_plugins_settings_python']['smartd_log'] is defined"
     - "vars['netdata_plugins_settings_python']['smartd_log'] != ''"
-- import_tasks: "conf.d/python.d/nginx.yml"
+- ansible.builtin.include_tasks:
+    file: "conf.d/python.d/nginx.yml"
   when:
     - "vars['netdata_plugins_settings_python']['nginx'] is defined"
     - "vars['netdata_plugins_settings_python']['nginx'] != ''"
+- ansible.builtin.include_tasks:
+    file: "conf.d/plugin.d/fping.yml"
+  when:
+    - "vars['netdata_plugins_settings_plugind']['fping'] is defined"
+    - "vars['netdata_plugins_settings_plugind']['fping'] != ''"

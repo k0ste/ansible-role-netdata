@@ -22,6 +22,10 @@
       hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].settings[].plugins_settings[].python[] |
       [0]') }}"
+    netdata_plugins_settings_plugind: "{{
+      hostvars[inventory_hostname]['netdata'] |
+      community.general.json_query('[].settings[].plugins_settings[].plugin[] |
+      [0]') }}"
 - name: netdata | Assert that netdata package state in valid value
   ansible.builtin.assert:
     that:

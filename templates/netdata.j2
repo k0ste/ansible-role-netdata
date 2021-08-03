@@ -67,6 +67,14 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
+{% if n.host_labels is defined %}
+{{ '[host labels]' }}
+{% for hl in n.host_labels %}
+{% for k,v in ns.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
 {% if n.disk_family is defined %}
 {% for nd in n.disk_family %}
 {{ '[disk.' + nd + ']' }}
