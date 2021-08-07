@@ -70,8 +70,8 @@
 {% if n.host_labels is defined %}
 {{ '[host labels]' }}
 {% for hl in n.host_labels %}
-{% for k,v in ns.items() %}
-{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% for k,v in hl.items() %}
+{{ '  ' + k | replace('-', '_') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
