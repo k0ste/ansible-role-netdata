@@ -39,43 +39,53 @@ netdata:
   settings:
   - global:
     - memory_mode: 'save'
-      stock_config_directory: "{{ netdata_stock_config_directory | default(omit) }}"
-      web_files_owner: "{{ netdata_settings_web_files_owner | default('netdata') }}"
-      web_files_group: "{{ netdata_settings_web_files_group | default('netdata') }}"
+      stock_config_directory:
+        "{{ netdata_stock_config_directory | default(omit) }}"
+      web_files_owner:
+        "{{ netdata_settings_web_files_owner | default('netdata') }}"
+      web_files_group:
+        "{{ netdata_settings_web_files_group | default('netdata') }}"
       memory_deduplication_(ksm): 'no'
       error_log: 'stderr'
       access_log: 'none'
   - plugins:
-    - checks: 'no'
-      node.d: 'no'
-      fping: 'no'
+      - checks: 'no'
+        node.d: 'no'
+        fping: 'no'
+  - plugin:
+      - path: 'proc:/proc/net/dev'
+        bandwidth_for_all_interfaces: 'yes'
+        packets_for_all_interfaces: 'yes'
+        errors_for_all_interfaces: 'yes'
+        drops_for_all_interfaces: 'yes'
+        fifo_for_all_interfaces: 'yes'
   - health:
-    - enabled: 'no'
+      - enabled: 'no'
   - backend:
-    - enabled: 'no'
+      - enabled: 'no'
   - registry:
-    - enabled: 'yes'
+      - enabled: 'yes'
   - statsd:
-    - enabled: 'no'
+      - enabled: 'no'
   # Special section, if lmv label assigned and another application doesn't have
   # this label, we can rename family label. Useful for work with 3rd party
   # exporters.
   - disk_family:
-    - 'dm-0'
-    - 'dm-1'
+      - 'dm-0'
+      - 'dm-1'
 # conf.d settings
   - plugins_settings:
 # pyhond.d plugins settings.
-    - python:
+      - python:
 # smartd_log plugin settings.
-      - smartd_log:
-        - log_path: '/var/log/smartd'
+        - smartd_log:
+          - log_path: '/var/log/smartd'
 # Age should match with smartd interval (default is 30 min).
-          age: '60'
+            age: '60'
 # nginx plugin settings.
-        nginx:
-        - url: 'http://127.0.0.1/nginx_status'
-    - plugin:
+          nginx:
+            - url: 'http://127.0.0.1/nginx_status'
+      - plugin:
         - fping:
             - fping: '/usr/local/bin/fping'
 # Set here all the hosts you need to ping

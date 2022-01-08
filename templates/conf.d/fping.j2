@@ -1,6 +1,6 @@
-{{ '## ' + 'fping.conf' }}
+{{ '## fping.conf' }}
 {{ '# ' + ansible_managed }}
-{{ '# ' + 'Do not edit manually' }}
+{{ '# Do not edit manually' }}
 
 {% for nf in vars['netdata_plugins_settings_plugind']['fping'] %}
 {% if nf.fping is defined and nf.fping != '' %}

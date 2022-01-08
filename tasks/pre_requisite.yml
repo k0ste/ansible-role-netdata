@@ -1,14 +1,14 @@
 ---
-- name: netdata | Assert that system manager is systemd
+- name: "netdata | Assert that system manager is systemd"
   ansible.builtin.assert:
     that:
       - "hostvars[inventory_hostname]['ansible_service_mgr'] == 'systemd'"
     msg: "System manager is not systemd."
     quiet: "true"
-- name: netdata | Add the OS specific varibles
+- name: "netdata | Add the OS specific varibles"
   ansible.builtin.include_vars:
     file: "{{ hostvars[inventory_hostname]['ansible_os_family'] + '.yml' }}"
-- name: netdata | Set facts about netdata role
+- name: "netdata | Set facts about netdata role"
   ansible.builtin.set_fact:
     netdata_systemd_dir: "{{ '/etc/systemd/system/' +
       hostvars[inventory_hostname]['netdata_service'] + '.service.d' }}"
@@ -26,7 +26,7 @@
       hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].settings[].plugins_settings[].plugin[] |
       [0]') }}"
-- name: netdata | Assert that netdata package state in valid value
+- name: "netdata | Assert that netdata package state in valid value"
   ansible.builtin.assert:
     that:
       - "vars['netdata_package_state'] in ['present', 'latest']"
@@ -35,7 +35,7 @@
   when:
     - "vars['netdata_package_state'] is defined"
     - "vars['netdata_package_state'] != ''"
-- name: netdata | Create catalogs
+- name: "netdata | Create catalogs"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
     state: "directory"
@@ -45,7 +45,7 @@
   when:
     - "vars['netdata_settings'] is defined"
     - "vars['netdata_settings'] != ''"
-- name: netdata | Create override systemd service directory
+- name: "netdata | Create override systemd service directory"
   ansible.builtin.file:
     path: "{{ vars['netdata_systemd_dir'] }}"
     state: "directory"

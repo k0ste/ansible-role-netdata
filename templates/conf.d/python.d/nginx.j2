@@ -1,6 +1,6 @@
-{{ '## ' + 'nginx.conf' }}
+{{ '## nginx.conf' }}
 {{ '# ' + ansible_managed }}
-{{ '# ' + 'Do not edit manually' }}
+{{ '# Do not edit manually' }}
 
 {% for nn in vars['netdata_plugins_settings_python']['nginx'] %}
 {% if loop.first %}

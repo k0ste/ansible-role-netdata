@@ -1,5 +1,5 @@
 ---
-- name: netdata | Deploy conf.d/python.d/nginx.conf
+- name: "netdata | Deploy conf.d/python.d/nginx.conf"
   template:
     src: "conf.d/python.d/nginx.j2"
     dest: "{{ hostvars[inventory_hostname]['netdata_plugins_conf_dest'] +

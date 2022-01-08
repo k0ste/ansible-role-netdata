@@ -1,5 +1,5 @@
 ---
-- name: netdata | Deploy conf.d/fping.conf
+- name: "netdata | Deploy conf.d/fping.conf"
   template:
     src: "conf.d/fping.j2"
     dest: "{{ hostvars[inventory_hostname]['netdata_plugins_conf_dest'] +

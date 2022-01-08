@@ -1,6 +1,6 @@
-{{ '## ' + 'smartd_log.conf' }}
+{{ '## smartd_log.conf' }}
 {{ '# ' + ansible_managed }}
-{{ '# ' + 'Do not edit manually' }}
+{{ '# Do not edit manually' }}
 
 {% for ns in vars['netdata_plugins_settings_python']['smartd_log'] %}
 {% if loop.first %}

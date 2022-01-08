@@ -1,9 +1,9 @@
-{{ '## ' + 'netdata.conf' }}
+{{ '## netdata.conf' }}
 {{ '# ' + ansible_managed }}
-{{ '# ' + 'Do not edit manually' }}
+{{ '# Do not edit manually' }}
 
 {% for n in vars['netdata_settings'] %}
-{% if n.global is defined %}
+{% if n.global is defined and n.global != '' %}
 {{ '[global]' }}
 {% for ng in n.global %}
 {% for k,v in ng.items() %}
@@ -11,7 +11,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.plugins is defined %}
+{% if n.plugins is defined and n.plugins != '' %}
 {{ '[plugins]' }}
 {% for np in n.plugins %}
 {% for k,v in np.items() %}
@@ -19,7 +19,18 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.health is defined %}
+{% if n.plugin is defined and n.plugin != '' %}
+{% for np in n.plugin %}
+{% for k,v in np.items() %}
+{% if k == 'path' %}
+{{ '[plugin:' + v + ']' }}
+{% else %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n.health is defined and n.health != '' %}
 {{ '[health]' }}
 {% for nh in n.health %}
 {% for k,v in nh.items() %}
@@ -27,7 +38,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.backend is defined %}
+{% if n.backend is defined and n.backend != '' %}
 {{ '[backend]' }}
 {% for nb in n.backend %}
 {% for k,v in nb.items() %}
@@ -35,7 +46,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.registry is defined %}
+{% if n.registry is defined and n.registry != '' %}
 {{ '[registry]' }}
 {% for nr in n.registry %}
 {% for k,v in nr.items() %}
@@ -43,7 +54,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.web is defined %}
+{% if n.web is defined and n.web != '' %}
 {{ '[web]' }}
 {% for nw in n.web %}
 {% for k,v in nw.items() %}
@@ -51,7 +62,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.cloud is defined %}
+{% if n.cloud is defined and n.cloud != '' %}
 {{ '[cloud]' }}
 {% for nc in n.cloud %}
 {% for k,v in nc.items() %}
@@ -59,7 +70,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.statsd is defined %}
+{% if n.statsd is defined and n.statsd != '' %}
 {{ '[statsd]' }}
 {% for ns in n.statsd %}
 {% for k,v in ns.items() %}
@@ -67,7 +78,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.host_labels is defined %}
+{% if n.host_labels is defined and n.host_labels != '' %}
 {{ '[host labels]' }}
 {% for hl in n.host_labels %}
 {% for k,v in hl.items() %}
@@ -75,7 +86,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.disk_family is defined %}
+{% if n.disk_family is defined and n.disk_family != '' %}
 {% for nd in n.disk_family %}
 {{ '[disk.' + nd + ']' }}
 {{ '  family = ' + nd }}
