@@ -59,6 +59,9 @@ netdata:
         errors_for_all_interfaces: 'yes'
         drops_for_all_interfaces: 'yes'
         fifo_for_all_interfaces: 'yes'
+      - path: 'proc:/proc/diskstats'
+        path_to_device_mapper: '/dev/null'
+        performance_metrics_for_disks_with_major_253: 'yes'
   - health:
       - enabled: 'no'
   - backend:
@@ -67,12 +70,6 @@ netdata:
       - enabled: 'yes'
   - statsd:
       - enabled: 'no'
-  # Special section, if lmv label assigned and another application doesn't have
-  # this label, we can rename family label. Useful for work with 3rd party
-  # exporters.
-  - disk_family:
-      - 'dm-0'
-      - 'dm-1'
 # conf.d settings
   - plugins_settings:
 # pyhond.d plugins settings.
