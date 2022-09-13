@@ -1,0 +1,24 @@
+{{ '## python.d.conf' }}
+{{ '# ' + ansible_managed }}
+{{ '# Do not edit manually' }}
+
+{% for nl in vars['netdata_plugins_settings_python']['local'] %}
+{% if nl.enabled is defined and nl.enabled in ['yes', 'no'] %}
+{{ 'enabled: ' + nl.enabled }}
+{% endif %}
+{% if nl.gc_run is defined and nl.gc_run in ['yes', 'no'] %}
+{{ 'gc_run: ' + nl.gc_run }}
+{% endif %}
+{% if nl.gc_interval is defined and nl.gc_interval != '' %}
+{{ 'gc_interval: ' + nl.gc_interval }}
+{% endif %}
+{% if nl.modules is defined and nl.modules is sequence %}
+{% for nlm in nl.modules %}
+{% for k,v in nlm.items() %}
+{% if v is defined and v in ['yes', 'no'] %}
+{{ k + ': ' + v }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}

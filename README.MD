@@ -72,14 +72,28 @@ netdata:
       - enabled: 'no'
 # conf.d settings
   - plugins_settings:
-# pyhond.d plugins settings.
+# pyhond.d plugins settings
       - python:
-# smartd_log plugin settings.
-        - smartd_log:
+# The python.d.conf 'local' settings. Settings will be merged with distro
+# python.d.conf
+        - local:
+# Enable / disable the whole python.d.plugin (all its modules)
+          enabled: 'yes'
+# Enable / Disable explicit garbage collection (full collection run). Default is
+# enabled
+          gc_run: 'yes'
+# Garbage collection interval in seconds. Default is 300
+          gc_interval: '300'
+# This python.d modules will be explicity enabled or disabled
+          modules:
+            - ceph: 'no'
+              samba: 'yes'
+# smartd_log plugin settings
+          smartd_log:
           - log_path: '/var/log/smartd'
-# Age should match with smartd interval (default is 30 min).
+# Age should match with smartd interval (default is 30 min)
             age: '60'
-# nginx plugin settings.
+# nginx plugin settings
           nginx:
             - url: 'http://127.0.0.1/nginx_status'
       - plugin:

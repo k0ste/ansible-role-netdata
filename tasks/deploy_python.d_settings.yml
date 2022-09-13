@@ -1,0 +1,12 @@
+---
+- name: "netdata | Deploy python.d.conf"
+  ansible.builtin.template:
+    src: "python.d.conf.j2"
+    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] +
+      '/python.d.conf' }}"
+    group: "root"
+    owner: "root"
+    mode: "0644"
+    force: "yes"
+  notify:
+    - "Restart netdata"
