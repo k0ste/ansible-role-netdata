@@ -1,0 +1,22 @@
+{{ '## exporting.conf' }}
+{{ '# ' + ansible_managed }}
+{{ '# Do not edit manually' }}
+
+{% for e in vars['netdata_exporting_settings'] %}
+{% if e.global is defined and e.global != '' %}
+{{ '[exporting:global]' }}
+{% for eg in e.global %}
+{% for k,v in eg.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if e.prometheus is defined and e.prometheus != '' %}
+{{ '[prometheus:exporter]' }}
+{% for ep in e.prometheus %}
+{% for k,v in ep.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}

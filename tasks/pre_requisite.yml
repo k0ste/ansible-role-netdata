@@ -3,7 +3,7 @@
   ansible.builtin.assert:
     that:
       - "hostvars[inventory_hostname]['ansible_service_mgr'] == 'systemd'"
-    msg: "System manager is not systemd."
+    msg: "System manager is not systemd"
     quiet: "true"
 - name: "netdata | Add the OS specific varibles"
   ansible.builtin.include_vars:
@@ -16,15 +16,17 @@
       community.general.json_query('[].package_state | [0]') }}"
     netdata_settings: "{{ hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].settings[]') }}"
+    netdata_exporting_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+      community.general.json_query('[].settings[].exporting_settings[]') }}"
     netdata_plugins_settings: "{{ hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].settings[].plugins_settings[]') }}"
     netdata_plugins_settings_python: "{{
       hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].settings[].plugins_settings[].python[] |
       [0]') }}"
-    netdata_plugins_settings_plugind: "{{
+    netdata_plugins_settings_golang: "{{
       hostvars[inventory_hostname]['netdata'] |
-      community.general.json_query('[].settings[].plugins_settings[].plugin[] |
+      community.general.json_query('[].settings[].plugins_settings[].golang[] |
       [0]') }}"
 - name: "netdata | Assert that netdata package state in valid value"
   ansible.builtin.assert:

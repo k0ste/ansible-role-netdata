@@ -37,39 +37,44 @@ netdata:
   allow_sudo: 'true'
 # netdata.conf settings.
   settings:
-  - global:
-    - memory_mode: 'save'
-      stock_config_directory:
-        "{{ netdata_stock_config_directory | default(omit) }}"
-      web_files_owner:
-        "{{ netdata_settings_web_files_owner | default('netdata') }}"
-      web_files_group:
-        "{{ netdata_settings_web_files_group | default('netdata') }}"
-      memory_deduplication_(ksm): 'no'
-      error_log: 'stderr'
-      access_log: 'none'
-  - plugins:
-      - checks: 'no'
-        node.d: 'no'
-        fping: 'no'
-  - plugin:
-      - path: 'proc:/proc/net/dev'
-        bandwidth_for_all_interfaces: 'yes'
-        packets_for_all_interfaces: 'yes'
-        errors_for_all_interfaces: 'yes'
-        drops_for_all_interfaces: 'yes'
-        fifo_for_all_interfaces: 'yes'
-      - path: 'proc:/proc/diskstats'
-        path_to_device_mapper: '/dev/null'
-        performance_metrics_for_disks_with_major_253: 'yes'
-  - health:
-      - enabled: 'no'
-  - backend:
-      - enabled: 'no'
-  - registry:
-      - enabled: 'yes'
-  - statsd:
-      - enabled: 'no'
+    - global:
+        - memory_mode: 'save'
+          stock_config_directory:
+            "{{ netdata_stock_config_directory | default(omit) }}"
+          web_files_owner:
+            "{{ netdata_settings_web_files_owner | default('netdata') }}"
+          web_files_group:
+            "{{ netdata_settings_web_files_group | default('netdata') }}"
+          memory_deduplication_(ksm): 'no'
+          error_log: 'stderr'
+          access_log: 'none'
+    - plugins:
+        - checks: 'no'
+          node.d: 'no'
+    - plugin:
+        - path: 'proc:/proc/net/dev'
+          bandwidth_for_all_interfaces: 'yes'
+          packets_for_all_interfaces: 'yes'
+          errors_for_all_interfaces: 'yes'
+          drops_for_all_interfaces: 'yes'
+          fifo_for_all_interfaces: 'yes'
+        - path: 'proc:/proc/diskstats'
+          path_to_device_mapper: '/dev/null'
+          performance_metrics_for_disks_with_major_253: 'yes'
+    - health:
+        - enabled: 'no'
+    - backend:
+        - enabled: 'no'
+    - registry:
+        - enabled: 'yes'
+    - statsd:
+        - enabled: 'no'
+# exporting.conf settings
+  - exporting_settings:
+# prometheus exporter settings
+      - prometheus:
+# enable netdata meta labels
+          - send_automatic_labels: 'yes'
 # conf.d settings
   - plugins_settings:
 # pyhond.d plugins settings
@@ -96,18 +101,4 @@ netdata:
 # nginx plugin settings
           nginx:
             - url: 'http://127.0.0.1/nginx_status'
-      - plugin:
-        - fping:
-            - fping: '/usr/local/bin/fping'
-# Set here all the hosts you need to ping
-              hosts:
-                - 'host1'
-                - 'host2'
-# Override the chart update frequency - the default is inherited from Netdata
-              update_every: '1'
-# Time in milliseconds (1 sec = 1000 ms) to ping the hosts
-# 200 = 5 pings per second
-              ping_every: '200'
-# Other fping options - these are the defaults
-              fping_opts: '-R -b 56 -i 1 -r 0 -t 5000'
 ```

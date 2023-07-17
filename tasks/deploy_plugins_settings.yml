@@ -14,8 +14,3 @@
   when:
     - "vars['netdata_plugins_settings_python']['nginx'] is defined"
     - "vars['netdata_plugins_settings_python']['nginx'] != ''"
-- ansible.builtin.include_tasks:
-    file: "conf.d/plugin.d/fping.yml"
-  when:
-    - "vars['netdata_plugins_settings_plugind']['fping'] is defined"
-    - "vars['netdata_plugins_settings_plugind']['fping'] != ''"

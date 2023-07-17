@@ -1,7 +1,9 @@
 ---
-- ansible.builtin.import_tasks:
+- name: "netdata | Include pre requisite tasks"
+  ansible.builtin.import_tasks:
     file: "pre_requisite.yml"
-- ansible.builtin.include_tasks:
+- name: "netdata | Include packages tasks"
+  ansible.builtin.include_tasks:
     file: "packages.yml"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
@@ -12,9 +14,17 @@
        community.general.json_query(vars['netdata_install_package']) == 'true'"
   vars:
     netdata_install_package: "[] | map(&install_package || 'false', @) | [0]"
-- ansible.builtin.import_tasks:
+- name: "netdata | Include deployment tasks"
+  ansible.builtin.import_tasks:
     file: "deploy_netdata.yml"
-- ansible.builtin.include_tasks:
+- name: "netdata | Include exporting settings tasks"
+  ansible.builtin.include_tasks:
+    file: "deploy_exporting_settings.yml"
+  when:
+    - "vars['netdata_exporting_settings'] is defined"
+    - "vars['netdata_exporting_settings'] != []"
+- name: "netdata | Include plugins settings tasks"
+  ansible.builtin.include_tasks:
     file: "deploy_plugins_settings.yml"
   when:
     - "vars['netdata_plugins_settings'] is defined"
