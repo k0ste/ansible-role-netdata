@@ -30,18 +30,18 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.health is defined and n.health != '' %}
-{{ '[health]' }}
-{% for nh in n.health %}
-{% for k,v in nh.items() %}
+{% if n['logs'] is defined and n['logs'] != '' %}
+{{ '[logs]' }}
+{% for nl in n['logs'] %}
+{% for k,v in nl.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.backend is defined and n.backend != '' %}
-{{ '[backend]' }}
-{% for nb in n.backend %}
-{% for k,v in nb.items() %}
+{% if n.health is defined and n.health != '' %}
+{{ '[health]' }}
+{% for nh in n.health %}
+{% for k,v in nh.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
@@ -74,6 +74,14 @@
 {{ '[statsd]' }}
 {% for ns in n.statsd %}
 {% for k,v in ns.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n['ml'] is defined and n['ml'] != '' %}
+{{ '[ml]' }}
+{% for nm in n['ml'] %}
+{% for k,v in nm.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}

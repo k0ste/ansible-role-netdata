@@ -39,18 +39,7 @@ netdata:
   settings:
     - global:
         - memory_mode: 'save'
-          stock_config_directory:
-            "{{ netdata_stock_config_directory | default(omit) }}"
-          web_files_owner:
-            "{{ netdata_settings_web_files_owner | default('netdata') }}"
-          web_files_group:
-            "{{ netdata_settings_web_files_group | default('netdata') }}"
           memory_deduplication_(ksm): 'no'
-          error_log: 'stderr'
-          access_log: 'none'
-    - plugins:
-        - checks: 'no'
-          node.d: 'no'
     - plugin:
         - path: 'proc:/proc/net/dev'
           bandwidth_for_all_interfaces: 'yes'
@@ -63,10 +52,6 @@ netdata:
           performance_metrics_for_disks_with_major_253: 'yes'
     - health:
         - enabled: 'no'
-    - backend:
-        - enabled: 'no'
-    - registry:
-        - enabled: 'yes'
     - statsd:
         - enabled: 'no'
 # exporting.conf settings
