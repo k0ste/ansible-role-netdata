@@ -1,15 +1,24 @@
 ---
-- ansible.builtin.include_tasks:
+- name: "netdata | Include python.d.conf tasks"
+  ansible.builtin.include_tasks:
     file: "deploy_python.d_settings.yml"
   when:
     - "vars['netdata_plugins_settings_python']['local'] is defined"
     - "vars['netdata_plugins_settings_python']['local'] != ''"
-- ansible.builtin.include_tasks:
+- name: "netdata | Include go.d.conf tasks"
+  ansible.builtin.include_tasks:
+    file: "deploy_go.d_settings.yml"
+  when:
+    - "vars['netdata_plugins_settings_golang']['local'] is defined"
+    - "vars['netdata_plugins_settings_golang']['local'] != ''"
+- name: "netdata | Include python.d/smartd_log.conf tasks"
+  ansible.builtin.include_tasks:
     file: "conf.d/python.d/smartd_log.yml"
   when:
     - "vars['netdata_plugins_settings_python']['smartd_log'] is defined"
     - "vars['netdata_plugins_settings_python']['smartd_log'] != ''"
-- ansible.builtin.include_tasks:
+- name: "netdata | Include python.d/nginx.conf tasks"
+  ansible.builtin.include_tasks:
     file: "conf.d/python.d/nginx.yml"
   when:
     - "vars['netdata_plugins_settings_python']['nginx'] is defined"

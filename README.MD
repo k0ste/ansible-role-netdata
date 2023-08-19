@@ -62,27 +62,33 @@ netdata:
           - send_automatic_labels: 'yes'
 # conf.d settings
   - plugins_settings:
+# go.d plugin settings
+    - golang:
+        - local:
+# This go.d modules will be explicity enabled or disabled
+          - modules:
+              - wireguard: 'no'
 # pyhond.d plugins settings
       - python:
 # The python.d.conf 'local' settings. Settings will be merged with distro
 # python.d.conf
-        - local:
+          - local:
 # Enable / disable the whole python.d.plugin (all its modules)
-          enabled: 'yes'
+            enabled: 'yes'
 # Enable / Disable explicit garbage collection (full collection run). Default is
 # enabled
-          gc_run: 'yes'
+            gc_run: 'yes'
 # Garbage collection interval in seconds. Default is 300
-          gc_interval: '300'
+            gc_interval: '300'
 # This python.d modules will be explicity enabled or disabled
-          modules:
-            - ceph: 'no'
-              samba: 'yes'
+            modules:
+              - ceph: 'no'
+                samba: 'yes'
 # smartd_log plugin settings
           smartd_log:
-          - log_path: '/var/log/smartd'
+            - log_path: '/var/log/smartd'
 # Age should match with smartd interval (default is 30 min)
-            age: '60'
+              age: '60'
 # nginx plugin settings
           nginx:
             - url: 'http://127.0.0.1/nginx_status'

@@ -14,9 +14,6 @@
        community.general.json_query(vars['netdata_install_package']) == 'true'"
   vars:
     netdata_install_package: "[] | map(&install_package || 'false', @) | [0]"
-- name: "netdata | Include deployment tasks"
-  ansible.builtin.import_tasks:
-    file: "deploy_netdata.yml"
 - name: "netdata | Include exporting settings tasks"
   ansible.builtin.include_tasks:
     file: "deploy_exporting_settings.yml"
@@ -29,3 +26,6 @@
   when:
     - "vars['netdata_plugins_settings'] is defined"
     - "vars['netdata_plugins_settings'] != []"
+- name: "netdata | Include deployment tasks"
+  ansible.builtin.import_tasks:
+    file: "deploy_netdata.yml"

@@ -1,25 +1,25 @@
-{{ '## python.d.conf' }}
+{{ '## go.d.conf' }}
 {{ '# ' + ansible_managed }}
 {{ '# Do not edit manually' }}
 
-{% for nl in vars['netdata_plugins_settings_python']['local'] %}
+{% for nl in vars['netdata_plugins_settings_golang']['local'] %}
 {% if nl['enabled'] is defined and nl['enabled'] in ['yes', 'no'] %}
 {{ 'enabled: ' + nl['enabled'] }}
 {% endif %}
 {% if nl['default_run'] is defined and nl['gc_run'] in ['yes', 'no'] %}
 {{ 'default_run: ' + nl['default_run'] }}
 {% endif %}
-{% if nl['gc_run'] is defined and nl['gc_run'] in ['yes', 'no'] %}
-{{ 'gc_run: ' + nl['gc_run'] }}
-{% endif %}
-{% if nl['gc_interval'] is defined and nl['gc_interval'] != '' %}
-{{ 'gc_interval: ' + nl['gc_interval'] }}
+{% if nl['max_procs'] is defined and nl['max_procs'] != '' %}
+{{ 'max_procs: ' ~ nl['max_procs'] }}
 {% endif %}
 {% if nl['modules'] is defined and nl['modules'] is sequence %}
 {% for nlm in nl['modules'] %}
+{% if loop['first'] %}
+{{ 'modules:' }}
+{% endif %}
 {% for k,v in nlm.items() %}
 {% if v is defined and v in ['yes', 'no'] %}
-{{ k + ': ' + v }}
+{{ '  ' + k + ': ' + v }}
 {% endif %}
 {% endfor %}
 {% endfor %}
