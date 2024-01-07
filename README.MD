@@ -38,9 +38,12 @@ netdata:
 # netdata.conf settings.
   settings:
     - global:
-        - memory_mode: 'save'
-          memory_deduplication_(ksm): 'no'
+        - hostname: 'example.com'
+    - db:
+        - memory_deduplication_(ksm): 'no'
     - plugin:
+        - path: 'proc'
+          /sys/class/infiniband: 'no'
         - path: 'proc:/proc/net/dev'
           bandwidth_for_all_interfaces: 'yes'
           packets_for_all_interfaces: 'yes'
@@ -50,6 +53,8 @@ netdata:
         - path: 'proc:/proc/diskstats'
           path_to_device_mapper: '/dev/null'
           performance_metrics_for_disks_with_major_253: 'yes'
+    - cloud:
+        - enabled: 'no'
     - health:
         - enabled: 'no'
     - statsd:
@@ -66,8 +71,10 @@ netdata:
     - golang:
         - local:
 # This go.d modules will be explicity enabled or disabled
-          - modules:
-              - wireguard: 'no'
+            - modules:
+                - wireguard: 'no'
+                - nvme: 'no'
+                - prometheus: 'no'
 # pyhond.d plugins settings
       - python:
 # The python.d.conf 'local' settings. Settings will be merged with distro
@@ -83,6 +90,7 @@ netdata:
 # This python.d modules will be explicity enabled or disabled
             modules:
               - ceph: 'no'
+                hdd_temp: 'no'
                 samba: 'yes'
 # smartd_log plugin settings
           smartd_log:

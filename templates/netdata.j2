@@ -11,6 +11,14 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
+{% if n.db is defined and n.db != '' %}
+{{ '[db]' }}
+{% for nd in n.db %}
+{% for k,v in nd.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endfor %}
+{% endfor %}
+{% endif %}
 {% if n.plugins is defined and n.plugins != '' %}
 {{ '[plugins]' }}
 {% for np in n.plugins %}
@@ -27,6 +35,14 @@
 {% else %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if n['sqlite'] is defined and n['sqlite'] != '' %}
+{{ '[sqlite]' }}
+{% for ns in n['sqlite'] %}
+{% for k,v in ns.items() %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
