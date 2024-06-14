@@ -11,15 +11,14 @@
   when:
     - "vars['netdata_plugins_settings_golang']['local'] is defined"
     - "vars['netdata_plugins_settings_golang']['local'] != ''"
-- name: "netdata | Include python.d/smartd_log.conf tasks"
-  ansible.builtin.include_tasks:
-    file: "conf.d/python.d/smartd_log.yml"
-  when:
-    - "vars['netdata_plugins_settings_python']['smartd_log'] is defined"
-    - "vars['netdata_plugins_settings_python']['smartd_log'] != ''"
+    - "vars['netdata_plugins_settings_golang']['local'] != []"
 - name: "netdata | Include python.d/nginx.conf tasks"
   ansible.builtin.include_tasks:
-    file: "conf.d/python.d/nginx.yml"
+    file: "go.d/ping.yml"
+  vars:
+    netdata_plugins_settings_golang_ping_jobs:
+      jobs: "{{ vars['netdata_plugins_settings_golang']['ping'] }}"
   when:
-    - "vars['netdata_plugins_settings_python']['nginx'] is defined"
-    - "vars['netdata_plugins_settings_python']['nginx'] != ''"
+    - "vars['netdata_plugins_settings_golang']['ping'] is defined"
+    - "vars['netdata_plugins_settings_golang']['ping'] != ''"
+    - "vars['netdata_plugins_settings_golang']['ping'] != []"

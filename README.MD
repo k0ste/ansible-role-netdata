@@ -75,6 +75,18 @@ netdata:
                 - wireguard: 'no'
                 - nvme: 'no'
                 - prometheus: 'no'
+# The go.d/ping module (see documentation for supported options)
+          ping:
+            - name: 'inet'
+              privileged: true
+              hosts:
+                - '8.8.8.8'
+                - '1.1.1.1'
+            - name: 'telegram'
+              privileged: true
+              network: 'ipv4'
+              hosts:
+                - 'api.telegram.org'
 # pyhond.d plugins settings
       - python:
 # The python.d.conf 'local' settings. Settings will be merged with distro
@@ -92,12 +104,4 @@ netdata:
               - ceph: 'no'
                 hdd_temp: 'no'
                 samba: 'yes'
-# smartd_log plugin settings
-          smartd_log:
-            - log_path: '/var/log/smartd'
-# Age should match with smartd interval (default is 30 min)
-              age: '60'
-# nginx plugin settings
-          nginx:
-            - url: 'http://127.0.0.1/nginx_status'
 ```
