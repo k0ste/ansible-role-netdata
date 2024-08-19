@@ -12,7 +12,7 @@
     - "vars['netdata_plugins_settings_golang']['local'] is defined"
     - "vars['netdata_plugins_settings_golang']['local'] != ''"
     - "vars['netdata_plugins_settings_golang']['local'] != []"
-- name: "netdata | Include python.d/nginx.conf tasks"
+- name: "netdata | Include go.d/ping.conf tasks"
   ansible.builtin.include_tasks:
     file: "go.d/ping.yml"
   vars:
@@ -22,3 +22,10 @@
     - "vars['netdata_plugins_settings_golang']['ping'] is defined"
     - "vars['netdata_plugins_settings_golang']['ping'] != ''"
     - "vars['netdata_plugins_settings_golang']['ping'] != []"
+- name: "netdata | Include charts.d/apcupsd.conf tasks"
+  ansible.builtin.include_tasks:
+    file: "charts.d/apcupsd.yml"
+  when:
+    - "vars['netdata_plugins_settings_charts']['apcupsd'] is defined"
+    - "vars['netdata_plugins_settings_charts']['apcupsd'] != ''"
+    - "vars['netdata_plugins_settings_charts']['apcupsd'] != []"

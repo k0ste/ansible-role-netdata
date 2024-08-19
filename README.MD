@@ -87,6 +87,17 @@ netdata:
               network: 'ipv4'
               hosts:
                 - 'api.telegram.org'
+# charts.d plugin settings
+    - charts:
+# The charts.d/apcupsd module (see documentation for supported options)
+        - apcupsd:
+            - sources:
+                - local: '127.0.0.1:3551'
+                  remote: '1.2.3.4:3551'
+              timeout: '3'
+              update_every: '1'
+              priority: '90000'
+              retries: '10'
 # pyhond.d plugins settings
       - python:
 # The python.d.conf 'local' settings. Settings will be merged with distro
@@ -102,6 +113,5 @@ netdata:
 # This python.d modules will be explicity enabled or disabled
             modules:
               - ceph: 'no'
-                hdd_temp: 'no'
                 samba: 'yes'
 ```
