@@ -1,0 +1,6 @@
+{{ '## adaptec_raid.conf' }}
+{{ '# ' + ansible_managed }}
+{{ '# Do not edit manually' }}
+
+{{ netdata_plugins_settings_golang_adaptec_raid_jobs |
+  ansible.builtin.to_nice_yaml(indent=2, explicit_start=True) }}

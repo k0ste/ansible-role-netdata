@@ -22,6 +22,26 @@
     - "vars['netdata_plugins_settings_golang']['ping'] is defined"
     - "vars['netdata_plugins_settings_golang']['ping'] != ''"
     - "vars['netdata_plugins_settings_golang']['ping'] != []"
+- name: "netdata | Include go.d/storcli.conf tasks"
+  ansible.builtin.include_tasks:
+    file: "go.d/storcli.yml"
+  vars:
+    netdata_plugins_settings_golang_storcli_jobs:
+      jobs: "{{ vars['netdata_plugins_settings_golang']['storcli'] }}"
+  when:
+    - "vars['netdata_plugins_settings_golang']['storcli'] is defined"
+    - "vars['netdata_plugins_settings_golang']['storcli'] != ''"
+    - "vars['netdata_plugins_settings_golang']['storcli'] != []"
+- name: "netdata | Include go.d/adaptec_raid.conf tasks"
+  ansible.builtin.include_tasks:
+    file: "go.d/adaptec_raid.yml"
+  vars:
+    netdata_plugins_settings_golang_adaptec_raid_jobs:
+      jobs: "{{ vars['netdata_plugins_settings_golang']['adaptec_raid'] }}"
+  when:
+    - "vars['netdata_plugins_settings_golang']['adaptec_raid'] is defined"
+    - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != ''"
+    - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != []"
 - name: "netdata | Include charts.d/apcupsd.conf tasks"
   ansible.builtin.include_tasks:
     file: "charts.d/apcupsd.yml"

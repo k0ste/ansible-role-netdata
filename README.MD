@@ -87,6 +87,14 @@ netdata:
               network: 'ipv4'
               hosts:
                 - 'api.telegram.org'
+# The go.d/storcli module (see documentation for supported options)
+          storcli:
+            - name: 'storcli'
+              update_every: 600
+# The go.d/adaptec_raid module (see documentation for supported options)
+          adaptec_raid:
+            - name: 'adaptec_raid'
+              update_every: 600
 # charts.d plugin settings
     - charts:
 # The charts.d/apcupsd module (see documentation for supported options)
