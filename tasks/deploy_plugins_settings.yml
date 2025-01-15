@@ -42,10 +42,13 @@
     - "vars['netdata_plugins_settings_golang']['adaptec_raid'] is defined"
     - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != ''"
     - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != []"
-- name: "netdata | Include charts.d/apcupsd.conf tasks"
+- name: "netdata | Include go.d/apcupsd.conf tasks"
   ansible.builtin.include_tasks:
-    file: "charts.d/apcupsd.yml"
+    file: "go.d/apcupsd.yml"
+  vars:
+    netdata_plugins_settings_golang_apcupsd_jobs:
+      jobs: "{{ vars['netdata_plugins_settings_golang']['apcupsd'] }}"
   when:
-    - "vars['netdata_plugins_settings_charts']['apcupsd'] is defined"
-    - "vars['netdata_plugins_settings_charts']['apcupsd'] != ''"
-    - "vars['netdata_plugins_settings_charts']['apcupsd'] != []"
+    - "vars['netdata_plugins_settings_golang']['apcupsd'] is defined"
+    - "vars['netdata_plugins_settings_golang']['apcupsd'] != ''"
+    - "vars['netdata_plugins_settings_golang']['apcupsd'] != []"

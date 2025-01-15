@@ -95,17 +95,16 @@ netdata:
           adaptec_raid:
             - name: 'adaptec_raid'
               update_every: 600
-# charts.d plugin settings
-    - charts:
-# The charts.d/apcupsd module (see documentation for supported options)
-        - apcupsd:
-            - sources:
-                - local: '127.0.0.1:3551'
-                  remote: '1.2.3.4:3551'
+# The go.d/apcupsd module (see documentation for supported options)
+          apcupsd:
+            - name: 'local'
+              address: '127.0.0.1:3551'
+            - name: 'remote'
+              address: '100.100.100.100:3551'
               timeout: '3'
               update_every: '1'
-              priority: '90000'
-              retries: '10'
+              autodetection_retry: '0'
+              timeout: '2'
 # pyhond.d plugins settings
       - python:
 # The python.d.conf 'local' settings. Settings will be merged with distro

@@ -1,9 +1,9 @@
 ---
-- name: "netdata | Deploy conf.d/charts.d/apcupsd.conf"
+- name: "netdata | Deploy conf.d/go.d/apcupsd.conf"
   ansible.builtin.template:
-    src: "charts.d/apcupsd.j2"
+    src: "go.d/apcupsd.j2"
     dest: "{{ hostvars[inventory_hostname]['netdata_dest'] +
-      '/charts.d/apcupsd.conf' }}"
+      '/go.d/apcupsd.conf' }}"
     group: "root"
     owner: "root"
     mode: "0644"
