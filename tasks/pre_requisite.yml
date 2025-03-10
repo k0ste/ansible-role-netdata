@@ -28,16 +28,22 @@
       "{{ hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].settings[].plugins_settings[].golang[] |
       [0]') }}"
-- name: "netdata | Assert that netdata package state in valid value"
+- name: "netdata | Assert that package state in valid value"
   ansible.builtin.assert:
     that:
       - "vars['netdata_package_state'] in ['present', 'latest']"
-    fail_msg: "'package_state' must be in 'present' or 'latest'."
+    fail_msg: "'package_state' must be in 'present' or 'latest'"
     quiet: "true"
   when:
     - "vars['netdata_package_state'] is defined"
-    - "vars['netdata_package_state'] != ''"
     - "vars['netdata_package_state'] != []"
+    - "vars['netdata_package_state'] != ''"
+- name: "netdata | Set package state to 'present' cause value is not defined"
+  ansible.builtin.set_fact:
+    netdata_package_state: "present"
+  when:
+    - "vars['netdata_package_state'] is defined"
+    - "vars['netdata_package_state'] == ''"
 - name: "netdata | Create netdata settings directory"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
@@ -51,7 +57,8 @@
     - "vars['netdata_settings'] != []"
 - name: "netdata | Create netdata plugins settings directory"
   ansible.builtin.file:
-    path: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' + item }}"
+    path: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
+      netdata_plugin_dir }}"
     state: "directory"
     owner: "root"
     group: "root"
@@ -65,8 +72,9 @@
     - 'logsmanagement.d'
     - "python.d"
   loop_control:
+    loop_var: "netdata_plugin_dir"
     label: "{{ 'Create ' + hostvars[inventory_hostname]['netdata_dest'] + '/' +
-      item }}"
+      netdata_plugin_dir }}"
   when:
     - "vars['netdata_plugins_settings'] is defined"
     - "vars['netdata_plugins_settings'] != ''"

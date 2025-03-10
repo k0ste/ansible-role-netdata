@@ -1,22 +1,35 @@
 ---
 - name: "netdata | Install the required packages in Redhat derivatives"
-  ansible.builtin.dnf:
-    name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
-    state: "{{ vars['netdata_package_state'] | default(omit) }}"
-    update_cache: "yes"
   when:
     - "hostvars[inventory_hostname]['ansible_os_family'] == 'RedHat'"
+  block:
+    - name: "netdata | Update dnf cache"
+      ansible.builtin.dnf:
+        update_cache: "yes"
+    - name: "netdata | Install package with dnf"
+      ansible.builtin.dnf:
+        name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
+        state: "{{ vars['netdata_package_state'] | default(omit) }}"
 - name: "netdata | Install the required packages in Debian derivatives"
-  ansible.builtin.apt:
-    name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
-    state: "{{ vars['netdata_package_state'] | default(omit) }}"
-    update_cache: "yes"
   when:
     - "hostvars[inventory_hostname]['ansible_os_family'] == 'Debian'"
-- name: "netdata | Install the required packages in ArchLinux derivatives"
-  community.general.pacman:
-    name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
-    state: "{{ vars['netdata_package_state'] | default(omit) }}"
-    update_cache: "yes"
+  block:
+    - name: "netdata | Update apt cache"
+      ansible.builtin.apt:
+        update_cache: "yes"
+    - name: "netdata | Install package with apt"
+      ansible.builtin.apt:
+        name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
+        state: "{{ vars['netdata_package_state'] | default(omit) }}"
+- name: "netdata | Install the required packages in ArchLinux
+    derivatives"
   when:
     - "hostvars[inventory_hostname]['ansible_os_family'] == 'Archlinux'"
+  block:
+    - name: "netdata | Update pacman cache"
+      community.general.pacman:
+        update_cache: "yes"
+    - name: "netdata | Install package with pacman"
+      community.general.pacman:
+        name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
+        state: "{{ vars['netdata_package_state'] | default(omit) }}"
