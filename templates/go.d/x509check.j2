@@ -1,0 +1,6 @@
+{{ '## x509check.conf' }}
+{{ '# ' + ansible_managed }}
+{{ '# Do not edit manually' }}
+
+{{ netdata_plugins_settings_golang_x509check_jobs |
+  ansible.builtin.to_nice_yaml(indent=2, explicit_start=True) }}

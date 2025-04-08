@@ -87,6 +87,15 @@ netdata:
               network: 'ipv4'
               hosts:
                 - 'api.telegram.org'
+# The go.d/x509check module (see documentation for supported options)
+          x509check:
+            - name: 'redhat.com'
+              source: 'file:///var/lib/lego/certificates/redhat.com.crt'
+              update_every: 600
+              autodetection_retry: 60
+              check_full_chain: yes
+            - name: 'ansible.com'
+              source: 'https://ansible.com:443'
 # The go.d/storcli module (see documentation for supported options)
           storcli:
             - name: 'storcli'

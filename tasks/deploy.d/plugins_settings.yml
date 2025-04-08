@@ -22,6 +22,16 @@
     - "vars['netdata_plugins_settings_golang']['ping'] is defined"
     - "vars['netdata_plugins_settings_golang']['ping'] != ''"
     - "vars['netdata_plugins_settings_golang']['ping'] != []"
+- name: "netdata | Include go.d/x509check.conf tasks"
+  ansible.builtin.include_tasks:
+    file: "deploy.d/go.d/x509check.yml"
+  vars:
+    netdata_plugins_settings_golang_x509check_jobs:
+      jobs: "{{ vars['netdata_plugins_settings_golang']['x509check'] }}"
+  when:
+    - "vars['netdata_plugins_settings_golang']['x509check'] is defined"
+    - "vars['netdata_plugins_settings_golang']['x509check'] != ''"
+    - "vars['netdata_plugins_settings_golang']['x509check'] != []"
 - name: "netdata | Include go.d/storcli.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/storcli.yml"
