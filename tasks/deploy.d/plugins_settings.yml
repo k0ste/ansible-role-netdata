@@ -4,14 +4,17 @@
     file: "deploy.d/python.d_settings.yml"
   when:
     - "vars['netdata_plugins_settings_python']['local'] is defined"
+    - "vars['netdata_plugins_settings_python']['local'] != []"
     - "vars['netdata_plugins_settings_python']['local'] != ''"
+    - "vars['netdata_plugins_settings_python']['local'] != None"
 - name: "netdata | Include go.d.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d_settings.yml"
   when:
     - "vars['netdata_plugins_settings_golang']['local'] is defined"
-    - "vars['netdata_plugins_settings_golang']['local'] != ''"
     - "vars['netdata_plugins_settings_golang']['local'] != []"
+    - "vars['netdata_plugins_settings_golang']['local'] != ''"
+    - "vars['netdata_plugins_settings_golang']['local'] != None"
 - name: "netdata | Include go.d/ping.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/ping.yml"
@@ -20,8 +23,9 @@
       jobs: "{{ vars['netdata_plugins_settings_golang']['ping'] }}"
   when:
     - "vars['netdata_plugins_settings_golang']['ping'] is defined"
-    - "vars['netdata_plugins_settings_golang']['ping'] != ''"
     - "vars['netdata_plugins_settings_golang']['ping'] != []"
+    - "vars['netdata_plugins_settings_golang']['ping'] != ''"
+    - "vars['netdata_plugins_settings_golang']['ping'] != None"
 - name: "netdata | Include go.d/x509check.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/x509check.yml"
@@ -30,8 +34,9 @@
       jobs: "{{ vars['netdata_plugins_settings_golang']['x509check'] }}"
   when:
     - "vars['netdata_plugins_settings_golang']['x509check'] is defined"
-    - "vars['netdata_plugins_settings_golang']['x509check'] != ''"
     - "vars['netdata_plugins_settings_golang']['x509check'] != []"
+    - "vars['netdata_plugins_settings_golang']['x509check'] != ''"
+    - "vars['netdata_plugins_settings_golang']['x509check'] != None"
 - name: "netdata | Include go.d/storcli.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/storcli.yml"
@@ -40,8 +45,9 @@
       jobs: "{{ vars['netdata_plugins_settings_golang']['storcli'] }}"
   when:
     - "vars['netdata_plugins_settings_golang']['storcli'] is defined"
-    - "vars['netdata_plugins_settings_golang']['storcli'] != ''"
     - "vars['netdata_plugins_settings_golang']['storcli'] != []"
+    - "vars['netdata_plugins_settings_golang']['storcli'] != ''"
+    - "vars['netdata_plugins_settings_golang']['storcli'] != None"
 - name: "netdata | Include go.d/adaptec_raid.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/adaptec_raid.yml"
@@ -50,8 +56,9 @@
       jobs: "{{ vars['netdata_plugins_settings_golang']['adaptec_raid'] }}"
   when:
     - "vars['netdata_plugins_settings_golang']['adaptec_raid'] is defined"
-    - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != ''"
     - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != []"
+    - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != ''"
+    - "vars['netdata_plugins_settings_golang']['adaptec_raid'] != None"
 - name: "netdata | Include go.d/apcupsd.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/apcupsd.yml"
@@ -60,5 +67,6 @@
       jobs: "{{ vars['netdata_plugins_settings_golang']['apcupsd'] }}"
   when:
     - "vars['netdata_plugins_settings_golang']['apcupsd'] is defined"
-    - "vars['netdata_plugins_settings_golang']['apcupsd'] != ''"
     - "vars['netdata_plugins_settings_golang']['apcupsd'] != []"
+    - "vars['netdata_plugins_settings_golang']['apcupsd'] != ''"
+    - "vars['netdata_plugins_settings_golang']['apcupsd'] != None"

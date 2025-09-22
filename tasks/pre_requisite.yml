@@ -38,12 +38,14 @@
     - "vars['netdata_package_state'] is defined"
     - "vars['netdata_package_state'] != []"
     - "vars['netdata_package_state'] != ''"
+    - "vars['netdata_package_state'] != None"
 - name: "netdata | Set package state to 'present' cause value is not defined"
   ansible.builtin.set_fact:
     netdata_package_state: "present"
   when:
     - "vars['netdata_package_state'] is defined"
-    - "vars['netdata_package_state'] == ''"
+    - "(vars['netdata_package_state'] == '' or
+      vars['netdata_package_state'] == None)"
 - name: "netdata | Create netdata settings directory"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"

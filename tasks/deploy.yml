@@ -6,6 +6,7 @@
     - "vars['netdata_exporting_settings'] is defined"
     - "vars['netdata_exporting_settings'] != []"
     - "vars['netdata_exporting_settings'] != ''"
+    - "vars['netdata_exporting_settings'] != None"
 - name: "netdata | Include plugins settings tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/plugins_settings.yml"
@@ -13,6 +14,7 @@
     - "vars['netdata_plugins_settings'] is defined"
     - "vars['netdata_plugins_settings'] != []"
     - "vars['netdata_plugins_settings'] != ''"
+    - "vars['netdata_plugins_settings'] != None"
 - name: "netdata | Include netdata deployment tasks"
   ansible.builtin.import_tasks:
     file: "deploy.d/netdata.yml"

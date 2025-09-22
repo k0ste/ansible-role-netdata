@@ -10,6 +10,8 @@
   when:
     - "vars['netdata_settings'] is defined"
     - "vars['netdata_settings'] != []"
+    - "vars['netdata_settings'] != ''"
+    - "vars['netdata_settings'] != None"
   notify:
     - "Restart netdata"
 - name: "netdata | Deploy Netdata service configuration"
