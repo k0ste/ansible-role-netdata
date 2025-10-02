@@ -57,6 +57,7 @@
     - "vars['netdata_settings'] is defined"
     - "vars['netdata_settings'] != ''"
     - "vars['netdata_settings'] != []"
+    - "vars['netdata_settings'] != None"
 - name: "netdata | Create netdata plugins settings directory"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
@@ -71,7 +72,6 @@
     - 'ebpf.d'
     - 'health.d'
     - 'go.d'
-    - 'logsmanagement.d'
     - "python.d"
   loop_control:
     loop_var: "netdata_plugin_dir"
@@ -81,6 +81,7 @@
     - "vars['netdata_plugins_settings'] is defined"
     - "vars['netdata_plugins_settings'] != ''"
     - "vars['netdata_plugins_settings'] != []"
+    - "vars['netdata_plugins_settings'] != None"
 - name: "netdata | Create override systemd service directory"
   ansible.builtin.file:
     path: "{{ vars['netdata_systemd_dir'] }}"

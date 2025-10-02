@@ -21,8 +21,7 @@
       ansible.builtin.apt:
         name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
         state: "{{ vars['netdata_package_state'] | default(omit) }}"
-- name: "netdata | Install the required packages in ArchLinux
-    derivatives"
+- name: "netdata | Install the required packages in ArchLinux derivatives"
   when:
     - "hostvars[inventory_hostname]['ansible_os_family'] == 'Archlinux'"
   block:
