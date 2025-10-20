@@ -28,6 +28,9 @@
       "{{ hostvars[inventory_hostname]['netdata'] |
       community.general.json_query('[].settings[].plugins_settings[].golang[] |
       [0]') }}"
+  when:
+    - "hostvars[inventory_hostname]['netdata'] is defined"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
 - name: "netdata | Assert that package state in valid value"
   ansible.builtin.assert:
     that:
@@ -36,9 +39,7 @@
     quiet: "true"
   when:
     - "vars['netdata_package_state'] is defined"
-    - "vars['netdata_package_state'] != []"
-    - "vars['netdata_package_state'] != ''"
-    - "vars['netdata_package_state'] != None"
+    - "vars['netdata_package_state'] not in ['', [], None]"
 - name: "netdata | Set package state to 'present' cause value is not defined"
   ansible.builtin.set_fact:
     netdata_package_state: "present"
@@ -55,9 +56,7 @@
     mode: "0755"
   when:
     - "vars['netdata_settings'] is defined"
-    - "vars['netdata_settings'] != ''"
-    - "vars['netdata_settings'] != []"
-    - "vars['netdata_settings'] != None"
+    - "vars['netdata_settings'] not in ['', [], None]"
 - name: "netdata | Create netdata plugins settings directory"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
@@ -79,9 +78,7 @@
       netdata_plugin_dir }}"
   when:
     - "vars['netdata_plugins_settings'] is defined"
-    - "vars['netdata_plugins_settings'] != ''"
-    - "vars['netdata_plugins_settings'] != []"
-    - "vars['netdata_plugins_settings'] != None"
+    - "vars['netdata_plugins_settings'] not in ['', [], None]"
 - name: "netdata | Create override systemd service directory"
   ansible.builtin.file:
     path: "{{ vars['netdata_systemd_dir'] }}"

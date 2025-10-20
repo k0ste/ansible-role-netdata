@@ -9,9 +9,7 @@
     force: "yes"
   when:
     - "vars['netdata_settings'] is defined"
-    - "vars['netdata_settings'] != []"
-    - "vars['netdata_settings'] != ''"
-    - "vars['netdata_settings'] != None"
+    - "vars['netdata_settings'] not in ['', [], None]"
   notify:
     - "Restart netdata"
 - name: "netdata | Deploy Netdata service configuration"
@@ -27,7 +25,7 @@
     - "Restart netdata"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
     - "hostvars[inventory_hostname]['netdata'] |
        community.general.json_query(vars['netdata_allow_sudo']) is defined"
     - "hostvars[inventory_hostname]['netdata'] |
@@ -40,7 +38,7 @@
     enabled: "yes"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
     - "hostvars[inventory_hostname]['netdata'] |
        community.general.json_query(vars['netdata_enable']) is defined"
     - "hostvars[inventory_hostname]['netdata'] |

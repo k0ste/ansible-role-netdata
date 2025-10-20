@@ -8,7 +8,7 @@
     state: "restarted"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
     - "hostvars[inventory_hostname]['netdata'] |
        community.general.json_query(vars['netdata_restart']) is defined"
     - "hostvars[inventory_hostname]['netdata'] |
