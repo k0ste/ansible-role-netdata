@@ -3,58 +3,75 @@
   ansible.builtin.include_tasks:
     file: "deploy.d/python.d_settings.yml"
   when:
-    - "vars['netdata_plugins_settings_python']['local'] is defined"
-    - "vars['netdata_plugins_settings_python']['local'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_python',
+      default='')['local'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_python',
+      default='')['local'] not in ['', [], '[]', None]"
 - name: "netdata | Include go.d.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d_settings.yml"
   when:
-    - "vars['netdata_plugins_settings_golang']['local'] is defined"
-    - "vars['netdata_plugins_settings_golang']['local'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['local'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['local'] not in ['', [], '[]', None]"
 - name: "netdata | Include go.d/ping.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/ping.yml"
   vars:
     netdata_plugins_settings_golang_ping_jobs:
-      jobs: "{{ vars['netdata_plugins_settings_golang']['ping'] }}"
+      jobs: "{{ lookup('ansible.builtin.vars',
+        'netdata_plugins_settings_golang')['ping'] }}"
   when:
-    - "vars['netdata_plugins_settings_golang']['ping'] is defined"
-    - "vars['netdata_plugins_settings_golang']['ping'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['ping'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['ping'] not in ['', [], '[]', None]"
 - name: "netdata | Include go.d/x509check.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/x509check.yml"
   vars:
     netdata_plugins_settings_golang_x509check_jobs:
-      jobs: "{{ vars['netdata_plugins_settings_golang']['x509check'] }}"
+      jobs: "{{ lookup('ansible.builtin.vars',
+        'netdata_plugins_settings_golang')['x509check'] }}"
   when:
-    - "vars['netdata_plugins_settings_golang']['x509check'] is defined"
-    - "vars['netdata_plugins_settings_golang']['x509check']
-      not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['x509check'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['x509check'] not in ['', [], '[]', None]"
 - name: "netdata | Include go.d/storcli.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/storcli.yml"
   vars:
     netdata_plugins_settings_golang_storcli_jobs:
-      jobs: "{{ vars['netdata_plugins_settings_golang']['storcli'] }}"
+      jobs: "{{ lookup('ansible.builtin.vars',
+        'netdata_plugins_settings_golang')['storcli'] }}"
   when:
-    - "vars['netdata_plugins_settings_golang']['storcli'] is defined"
-    - "vars['netdata_plugins_settings_golang']['storcli'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['storcli'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['storcli'] not in ['', [], '[]', None]"
 - name: "netdata | Include go.d/adaptec_raid.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/adaptec_raid.yml"
   vars:
     netdata_plugins_settings_golang_adaptec_raid_jobs:
-      jobs: "{{ vars['netdata_plugins_settings_golang']['adaptec_raid'] }}"
+      jobs: "{{ lookup('ansible.builtin.vars',
+        'netdata_plugins_settings_golang')['adaptec_raid'] }}"
   when:
-    - "vars['netdata_plugins_settings_golang']['adaptec_raid'] is defined"
-    - "vars['netdata_plugins_settings_golang']['adaptec_raid']
-      not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['adaptec_raid'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['adaptec_raid'] not in ['', [], '[]', None]"
 - name: "netdata | Include go.d/apcupsd.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/apcupsd.yml"
   vars:
     netdata_plugins_settings_golang_apcupsd_jobs:
-      jobs: "{{ vars['netdata_plugins_settings_golang']['apcupsd'] }}"
+      jobs: "{{ lookup('ansible.builtin.vars',
+        'netdata_plugins_settings_golang')['apcupsd'] }}"
   when:
-    - "vars['netdata_plugins_settings_golang']['apcupsd'] is defined"
-    - "vars['netdata_plugins_settings_golang']['apcupsd'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['apcupsd'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['apcupsd'] not in ['', [], '[]', None]"

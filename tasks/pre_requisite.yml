@@ -1,13 +1,22 @@
 ---
+- name: "netdata | Assert that ansible facts gathered successfully"
+  ansible.builtin.assert:
+    that:
+      - "hostvars[inventory_hostname]['ansible_facts']['service_mgr'] is
+        defined"
+    fail_msg: "'ansible_facts' not found. Please enable facts gathering"
+    quiet: "true"
 - name: "netdata | Assert that system manager is systemd"
   ansible.builtin.assert:
     that:
-      - "hostvars[inventory_hostname]['ansible_service_mgr'] == 'systemd'"
+      - "hostvars[inventory_hostname]['ansible_facts']['service_mgr'] ==
+        'systemd'"
     fail_msg: "System manager is not systemd"
     quiet: "true"
-- name: "netdata | Add the OS specific varibles"
+- name: "netdata | Add the OS specific variables"
   ansible.builtin.include_vars:
-    file: "{{ hostvars[inventory_hostname]['ansible_os_family'] + '.yml' }}"
+    file: "{{ hostvars[inventory_hostname]['ansible_facts']['os_family'] +
+      '.yml' }}"
 - name: "netdata | Set facts about netdata role"
   ansible.builtin.set_fact:
     netdata_systemd_dir: "{{ '/etc/systemd/system/' +
@@ -30,23 +39,25 @@
       [0]') }}"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
-- name: "netdata | Assert that package state in valid value"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
+- name: "netdata | Assert that netdata package state in valid value"
   ansible.builtin.assert:
     that:
-      - "vars['netdata_package_state'] in ['present', 'latest']"
-    fail_msg: "'package_state' must be in 'present' or 'latest'"
+      - "lookup('ansible.builtin.vars', 'netdata_package_state') in
+        ['present', 'latest']"
+    fail_msg: "{{ 'package_state must be in `present` or `latest`,
+      current is: ' + lookup('ansible.builtin.vars',
+      'netdata_package_state') }}"
     quiet: "true"
   when:
-    - "vars['netdata_package_state'] is defined"
-    - "vars['netdata_package_state'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_package_state',
+      default='') not in ['', [], '[]', None, 'present', 'latest']"
 - name: "netdata | Set package state to 'present' cause value is not defined"
   ansible.builtin.set_fact:
     netdata_package_state: "present"
   when:
-    - "vars['netdata_package_state'] is defined"
-    - "(vars['netdata_package_state'] == '' or
-      vars['netdata_package_state'] == None)"
+    - "lookup('ansible.builtin.vars', 'netdata_package_state',
+      default='') in ['', [], '[]', None]"
 - name: "netdata | Create netdata settings directory"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
@@ -55,8 +66,8 @@
     group: "root"
     mode: "0755"
   when:
-    - "vars['netdata_settings'] is defined"
-    - "vars['netdata_settings'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_settings',
+      default='') not in ['', [], '[]', None]"
 - name: "netdata | Create netdata plugins settings directory"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
@@ -77,11 +88,11 @@
     label: "{{ 'Create ' + hostvars[inventory_hostname]['netdata_dest'] + '/' +
       netdata_plugin_dir }}"
   when:
-    - "vars['netdata_plugins_settings'] is defined"
-    - "vars['netdata_plugins_settings'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings',
+      default='') not in ['', [], '[]', None]"
 - name: "netdata | Create override systemd service directory"
   ansible.builtin.file:
-    path: "{{ vars['netdata_systemd_dir'] }}"
+    path: "{{ lookup('ansible.builtin.vars', 'netdata_systemd_dir') }}"
     state: "directory"
     group: "root"
     owner: "root"
@@ -89,10 +100,9 @@
     recurse: "no"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_allow_sudo']) is defined"
-    - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_allow_sudo']) == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'netdata_allow_sudo', default='')) == 'true'"
   vars:
     netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"

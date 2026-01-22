@@ -8,14 +8,14 @@
     mode: "0644"
     force: "yes"
   when:
-    - "vars['netdata_settings'] is defined"
-    - "vars['netdata_settings'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_settings',
+      default='') not in ['', [], '[]', None]"
   notify:
     - "Restart netdata"
 - name: "netdata | Deploy Netdata service configuration"
   ansible.builtin.template:
     src: "netdata_service.j2"
-    dest: "{{ vars['netdata_systemd_dir'] + '/' +
+    dest: "{{ lookup('ansible.builtin.vars', 'netdata_systemd_dir') + '/' +
       hostvars[inventory_hostname]['netdata_service'] + '.conf' }}"
     owner: "root"
     group: "root"
@@ -25,23 +25,21 @@
     - "Restart netdata"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_allow_sudo']) is defined"
-    - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_allow_sudo']) == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'netdata_allow_sudo', default='')) == 'true'"
   vars:
     netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"
-- name: "netdata | Enable netdata"
+- name: "netdata | Enable netdata service"
   ansible.builtin.systemd:
     name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
     enabled: "yes"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_enable']) is defined"
-    - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_enable']) == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'netdata_enable', default='')) == 'true'"
   vars:
     netdata_enable: "[] | map(&enable || 'false', @) | [0]"

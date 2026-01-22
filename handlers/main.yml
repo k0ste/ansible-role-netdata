@@ -1,17 +1,18 @@
 ---
-- name: "Daemon reload"
+- name: "netdata | Reload systemd daemons"
   ansible.builtin.systemd:
     daemon_reload: "yes"
-- name: "Restart netdata"
+  listen: "Daemon reload"
+- name: "netdata | Restart netdata systemd service"
   ansible.builtin.systemd:
     name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
     state: "restarted"
+  listen: "Restart netdata"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], None]"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_restart']) is defined"
-    - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_restart']) == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'netdata_restart', default='')) == 'true'"
   vars:
     netdata_restart: "[] | map(&restart || 'false', @) | [0]"

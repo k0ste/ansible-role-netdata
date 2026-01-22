@@ -7,25 +7,24 @@
     file: "packages.yml"
   when:
     - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] != ''"
+    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_install_package']) is defined"
-    - "hostvars[inventory_hostname]['netdata'] |
-       community.general.json_query(vars['netdata_install_package']) == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'netdata_install_package', default='')) == 'true'"
   vars:
     netdata_install_package: "[] | map(&install_package || 'false', @) | [0]"
 - name: "netdata | Include exporting settings tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/exporting_settings.yml"
   when:
-    - "vars['netdata_exporting_settings'] is defined"
-    - "vars['netdata_exporting_settings'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_exporting_settings',
+      default='') not in ['', [], '[]', None]"
 - name: "netdata | Include plugins settings tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/plugins_settings.yml"
   when:
-    - "vars['netdata_plugins_settings'] is defined"
-    - "vars['netdata_plugins_settings'] not in ['', [], None]"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings',
+      default='') not in ['', [], '[]', None]"
 - name: "netdata | Include netdata deployment tasks"
   ansible.builtin.import_tasks:
     file: "deploy.d/netdata.yml"

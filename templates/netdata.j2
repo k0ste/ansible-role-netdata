@@ -2,33 +2,33 @@
 {{ '# ' + ansible_managed }}
 {{ '# Do not edit manually' }}
 
-{% for n in vars['netdata_settings'] %}
-{% if n.global is defined and n.global != '' %}
+{% for n in lookup('ansible.builtin.vars', 'netdata_settings') %}
+{% if n['global'] is defined and n['global'] not in ['', [], '[]', None] %}
 {{ '[global]' }}
-{% for ng in n.global %}
+{% for ng in n['global'] %}
 {% for k,v in ng.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.db is defined and n.db != '' %}
+{% if n['db'] is defined and n['db'] not in ['', [], '[]', None] %}
 {{ '[db]' }}
-{% for nd in n.db %}
+{% for nd in n['db'] %}
 {% for k,v in nd.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.plugins is defined and n.plugins != '' %}
+{% if n['plugins'] is defined and n['plugins'] not in ['', [], '[]', None] %}
 {{ '[plugins]' }}
-{% for np in n.plugins %}
+{% for np in n['plugins'] %}
 {% for k,v in np.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.plugin is defined and n.plugin != '' %}
-{% for np in n.plugin %}
+{% if n['plugin'] is defined and n['plugin'] not in ['', [], '[]', None] %}
+{% for np in n['plugin'] %}
 {% for k,v in np.items() %}
 {% if k == 'path' %}
 {{ '[plugin:' + v + ']' }}
@@ -38,7 +38,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n['sqlite'] is defined and n['sqlite'] != '' %}
+{% if n['sqlite'] is defined and n['sqlite'] not in ['', [], '[]', None] %}
 {{ '[sqlite]' }}
 {% for ns in n['sqlite'] %}
 {% for k,v in ns.items() %}
@@ -46,7 +46,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n['logs'] is defined and n['logs'] != '' %}
+{% if n['logs'] is defined and n['logs'] not in ['', [], '[]', None] %}
 {{ '[logs]' }}
 {% for nl in n['logs'] %}
 {% for k,v in nl.items() %}
@@ -54,47 +54,47 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.health is defined and n.health != '' %}
+{% if n['health'] is defined and n['health'] not in ['', [], '[]', None] %}
 {{ '[health]' }}
-{% for nh in n.health %}
+{% for nh in n['health'] %}
 {% for k,v in nh.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.registry is defined and n.registry != '' %}
+{% if n['registry'] is defined and n['registry'] not in ['', [], '[]', None] %}
 {{ '[registry]' }}
-{% for nr in n.registry %}
+{% for nr in n['registry'] %}
 {% for k,v in nr.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.web is defined and n.web != '' %}
+{% if n['web'] is defined and n['web'] not in ['', [], '[]', None] %}
 {{ '[web]' }}
-{% for nw in n.web %}
+{% for nw in n['web'] %}
 {% for k,v in nw.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.cloud is defined and n.cloud != '' %}
+{% if n['cloud'] is defined and n['cloud'] not in ['', [], '[]', None] %}
 {{ '[cloud]' }}
-{% for nc in n.cloud %}
+{% for nc in n['cloud'] %}
 {% for k,v in nc.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.statsd is defined and n.statsd != '' %}
+{% if n['statsd'] is defined and n['statsd'] not in ['', [], '[]', None] %}
 {{ '[statsd]' }}
-{% for ns in n.statsd %}
+{% for ns in n['statsd'] %}
 {% for k,v in ns.items() %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n['ml'] is defined and n['ml'] != '' %}
+{% if n['ml'] is defined and n['ml'] not in ['', [], '[]', None] %}
 {{ '[ml]' }}
 {% for nm in n['ml'] %}
 {% for k,v in nm.items() %}
@@ -102,9 +102,10 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
-{% if n.host_labels is defined and n.host_labels != '' %}
+{% if n['host_labels'] is defined and n['host_labels']
+  not in ['', [], '[]', None] %}
 {{ '[host labels]' }}
-{% for hl in n.host_labels %}
+{% for hl in n['host_labels'] %}
 {% for k,v in hl.items() %}
 {{ '  ' + k | replace('-', '_') + ' = ' + v }}
 {% endfor %}
