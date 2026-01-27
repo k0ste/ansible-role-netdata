@@ -132,7 +132,7 @@
 {% for hl in n['host_labels'] %}
 {% for k,v in hl.items() %}
 {% if v is defined and v not in ['', [], '[]', None] %}
-{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{{ '  ' + k | replace('-', '_') + ' = ' + v }}
 {% endif %}
 {% endfor %}
 {% endfor %}
