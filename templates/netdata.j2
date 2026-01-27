@@ -7,7 +7,9 @@
 {{ '[global]' }}
 {% for ng in n['global'] %}
 {% for k,v in ng.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -15,7 +17,9 @@
 {{ '[db]' }}
 {% for nd in n['db'] %}
 {% for k,v in nd.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -23,7 +27,9 @@
 {{ '[plugins]' }}
 {% for np in n['plugins'] %}
 {% for k,v in np.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -33,7 +39,9 @@
 {% if k == 'path' %}
 {{ '[plugin:' + v + ']' }}
 {% else %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endfor %}
@@ -42,7 +50,9 @@
 {{ '[sqlite]' }}
 {% for ns in n['sqlite'] %}
 {% for k,v in ns.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -50,7 +60,9 @@
 {{ '[logs]' }}
 {% for nl in n['logs'] %}
 {% for k,v in nl.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -58,7 +70,9 @@
 {{ '[health]' }}
 {% for nh in n['health'] %}
 {% for k,v in nh.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -66,7 +80,9 @@
 {{ '[registry]' }}
 {% for nr in n['registry'] %}
 {% for k,v in nr.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -74,7 +90,9 @@
 {{ '[web]' }}
 {% for nw in n['web'] %}
 {% for k,v in nw.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -82,7 +100,9 @@
 {{ '[cloud]' }}
 {% for nc in n['cloud'] %}
 {% for k,v in nc.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -90,7 +110,9 @@
 {{ '[statsd]' }}
 {% for ns in n['statsd'] %}
 {% for k,v in ns.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -98,7 +120,9 @@
 {{ '[ml]' }}
 {% for nm in n['ml'] %}
 {% for k,v in nm.items() %}
+{% if v is defined and v not in ['', [], '[]', None] %}
 {{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -107,7 +131,9 @@
 {{ '[host labels]' }}
 {% for hl in n['host_labels'] %}
 {% for k,v in hl.items() %}
-{{ '  ' + k | replace('-', '_') + ' = ' + v }}
+{% if v is defined and v not in ['', [], '[]', None] %}
+{{ '  ' + k | replace('_', ' ') + ' = ' + v }}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
