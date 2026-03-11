@@ -96,6 +96,23 @@ netdata:
               check_full_chain: yes
             - name: 'ansible.com'
               source: 'https://ansible.com:443'
+# The go.d/prometheus module (see documentation for supported options)
+          prometheus:
+            # Enable frr_exporter metrics (with our name)
+            - name: 'frr'
+              url: 'http://127.0.0.1:9342/metrics'
+              update_every: 10
+              autodetection_retry: 5
+            # Disable default auto-detection job (disable default -local name)
+            - name: 'frr_exporter_local'
+              url: 'http://127.0.0.1:999/metrics'
+              update_every: 1
+              autodetection_retry: 0
+            # Disable default auto-detection job (just disable this exporter)
+            - name: 'smartctl_exporter_local'
+              url: 'http://127.0.0.1:999/metrics'
+              update_every: 1
+              autodetection_retry: 0
 # The go.d/storcli module (see documentation for supported options)
           storcli:
             - name: 'storcli'

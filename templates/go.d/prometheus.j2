@@ -1,0 +1,7 @@
+{{ '## prometheus.conf' }}
+{{ '# ' + ansible_managed }}
+{{ '# Do not edit manually' }}
+
+{{ lookup('ansible.builtin.vars',
+  'netdata_plugins_settings_golang_prometheus_jobs') |
+  ansible.builtin.to_nice_yaml(indent=2, explicit_start=True) }}

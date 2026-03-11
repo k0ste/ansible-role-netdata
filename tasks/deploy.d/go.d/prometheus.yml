@@ -1,0 +1,12 @@
+---
+- name: "netdata | Deploy conf.d/go.d/prometheus.conf"
+  ansible.builtin.template:
+    src: "go.d/prometheus.j2"
+    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] +
+      '/go.d/prometheus.conf' }}"
+    group: "root"
+    owner: "root"
+    mode: "0644"
+    force: "yes"
+  notify:
+    - "Restart netdata"

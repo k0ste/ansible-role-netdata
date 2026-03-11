@@ -15,6 +15,18 @@
       default='')['local'] is defined"
     - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
       default='')['local'] not in ['', [], '[]', None]"
+- name: "netdata | Include go.d/prometheus.conf tasks"
+  ansible.builtin.include_tasks:
+    file: "deploy.d/go.d/prometheus.yml"
+  vars:
+    netdata_plugins_settings_golang_prometheus_jobs:
+      jobs: "{{ lookup('ansible.builtin.vars',
+        'netdata_plugins_settings_golang')['prometheus'] }}"
+  when:
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['prometheus'] is defined"
+    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings_golang',
+      default='')['prometheus'] not in ['', [], '[]', None]"
 - name: "netdata | Include go.d/ping.conf tasks"
   ansible.builtin.include_tasks:
     file: "deploy.d/go.d/ping.yml"
