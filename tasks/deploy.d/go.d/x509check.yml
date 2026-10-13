@@ -2,7 +2,7 @@
 - name: "netdata | Deploy conf.d/go.d/x509check.conf"
   ansible.builtin.template:
     src: "go.d/x509check.j2"
-    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] +
+    dest: "{{ lookup('ansible.builtin.vars', 'netdata_dest') +
       '/go.d/x509check.conf' }}"
     group: "root"
     owner: "root"

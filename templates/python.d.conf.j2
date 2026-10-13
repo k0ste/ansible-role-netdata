@@ -3,7 +3,7 @@
 {{ '# Do not edit manually' }}
 
 {% for nl in lookup('ansible.builtin.vars',
-  'netdata_plugins_settings_python')['local'] %}
+  '_netdata_plugins_settings_python')['local'] %}
 {% if nl['enabled'] is defined and nl['enabled'] in ['yes', 'no'] %}
 {{ 'enabled: ' + nl['enabled'] }}
 {% endif %}

@@ -2,7 +2,7 @@
 - name: "netdata | Deploy conf.d/go.d/prometheus.conf"
   ansible.builtin.template:
     src: "go.d/prometheus.j2"
-    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] +
+    dest: "{{ lookup('ansible.builtin.vars', 'netdata_dest') +
       '/go.d/prometheus.conf' }}"
     group: "root"
     owner: "root"

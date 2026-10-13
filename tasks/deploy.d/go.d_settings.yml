@@ -2,7 +2,7 @@
 - name: "netdata | Deploy go.d.conf"
   ansible.builtin.template:
     src: "go.d.conf.j2"
-    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/go.d.conf' }}"
+    dest: "{{ lookup('ansible.builtin.vars', 'netdata_dest') + '/go.d.conf' }}"
     group: "root"
     owner: "root"
     mode: "0644"

@@ -8,8 +8,9 @@
         update_cache: "yes"
     - name: "netdata | Install package with dnf"
       ansible.builtin.dnf:
-        name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
-        state: "{{ lookup('ansible.builtin.vars', 'netdata_package_state') }}"
+        name: "{{ lookup('ansible.builtin.vars', 'netdata_package') }}"
+        state: "{{ lookup('ansible.builtin.vars',
+          'netdata_package_state') }}"
 - name: "netdata | Install the required packages in Debian derivatives"
   when:
     - "hostvars[inventory_hostname]['ansible_facts']['os_family'] == 'Debian'"
@@ -19,8 +20,9 @@
         update_cache: "yes"
     - name: "netdata | Install package with apt"
       ansible.builtin.apt:
-        name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
-        state: "{{ lookup('ansible.builtin.vars', 'netdata_package_state') }}"
+        name: "{{ lookup('ansible.builtin.vars', 'netdata_package') }}"
+        state: "{{ lookup('ansible.builtin.vars',
+          'netdata_package_state') }}"
 - name: "netdata | Install the required packages in ArchLinux derivatives"
   when:
     - "hostvars[inventory_hostname]['ansible_facts']['os_family'] ==
@@ -31,5 +33,6 @@
         update_cache: "yes"
     - name: "netdata | Install package with pacman"
       community.general.pacman:
-        name: "{{ hostvars[inventory_hostname]['netdata_package'] }}"
-        state: "{{ lookup('ansible.builtin.vars', 'netdata_package_state') }}"
+        name: "{{ lookup('ansible.builtin.vars', 'netdata_package') }}"
+        state: "{{ lookup('ansible.builtin.vars',
+          'netdata_package_state') }}"

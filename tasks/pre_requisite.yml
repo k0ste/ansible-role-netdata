@@ -19,27 +19,27 @@
       '.yml' }}"
 - name: "netdata | Set facts about netdata role"
   ansible.builtin.set_fact:
-    netdata_systemd_dir: "{{ '/etc/systemd/system/' +
-      hostvars[inventory_hostname]['netdata_service'] + '.service.d' }}"
-    netdata_package_state: "{{ hostvars[inventory_hostname]['netdata'] |
+    _netdata_systemd_dir: "{{ '/etc/systemd/system/' +
+      lookup('ansible.builtin.vars', 'netdata_service') + '.service.d' }}"
+    netdata_package_state: "{{ lookup('ansible.builtin.vars', 'netdata') |
       community.general.json_query('[].package_state | [0]') }}"
-    netdata_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+    _netdata_settings: "{{ lookup('ansible.builtin.vars', 'netdata') |
       community.general.json_query('[].settings[]') }}"
-    netdata_exporting_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+    _netdata_exporting_settings: "{{ lookup('ansible.builtin.vars', 'netdata') |
       community.general.json_query('[].settings[].exporting_settings[]') }}"
-    netdata_plugins_settings: "{{ hostvars[inventory_hostname]['netdata'] |
+    _netdata_plugins_settings: "{{ lookup('ansible.builtin.vars', 'netdata') |
       community.general.json_query('[].settings[].plugins_settings[]') }}"
-    netdata_plugins_settings_python:
-      "{{ hostvars[inventory_hostname]['netdata'] |
+    _netdata_plugins_settings_python: "{{ lookup('ansible.builtin.vars',
+      'netdata') |
       community.general.json_query('[].settings[].plugins_settings[].python[] |
       [0]') }}"
-    netdata_plugins_settings_golang:
-      "{{ hostvars[inventory_hostname]['netdata'] |
+    _netdata_plugins_settings_golang: "{{ lookup('ansible.builtin.vars',
+      'netdata') |
       community.general.json_query('[].settings[].plugins_settings[].golang[] |
       [0]') }}"
   when:
-    - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
+    - "lookup('ansible.builtin.vars', 'netdata', default='')
+      not in ['', [], '[]', None]"
 - name: "netdata | Assert that netdata package state in valid value"
   ansible.builtin.assert:
     that:
@@ -60,18 +60,18 @@
       default='') in ['', [], '[]', None]"
 - name: "netdata | Create netdata settings directory"
   ansible.builtin.file:
-    path: "{{ hostvars[inventory_hostname]['netdata_dest'] }}"
+    path: "{{ lookup('ansible.builtin.vars', 'netdata_dest') }}"
     state: "directory"
     owner: "root"
     group: "root"
     mode: "0755"
   when:
-    - "lookup('ansible.builtin.vars', 'netdata_settings',
+    - "lookup('ansible.builtin.vars', '_netdata_settings',
       default='') not in ['', [], '[]', None]"
 - name: "netdata | Create netdata plugins settings directory"
   ansible.builtin.file:
-    path: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/' +
-      netdata_plugin_dir }}"
+    path: "{{ lookup('ansible.builtin.vars', 'netdata_dest') + '/' +
+      _netdata_plugin_dir }}"
     state: "directory"
     owner: "root"
     group: "root"
@@ -84,25 +84,25 @@
     - 'go.d'
     - "python.d"
   loop_control:
-    loop_var: "netdata_plugin_dir"
-    label: "{{ 'Create ' + hostvars[inventory_hostname]['netdata_dest'] + '/' +
-      netdata_plugin_dir }}"
+    loop_var: "_netdata_plugin_dir"
+    label: "{{ 'Create ' + lookup('ansible.builtin.vars', 'netdata_dest') +
+      '/' + _netdata_plugin_dir }}"
   when:
-    - "lookup('ansible.builtin.vars', 'netdata_plugins_settings',
+    - "lookup('ansible.builtin.vars', '_netdata_plugins_settings',
       default='') not in ['', [], '[]', None]"
 - name: "netdata | Create override systemd service directory"
   ansible.builtin.file:
-    path: "{{ lookup('ansible.builtin.vars', 'netdata_systemd_dir') }}"
+    path: "{{ lookup('ansible.builtin.vars', '_netdata_systemd_dir') }}"
     state: "directory"
     group: "root"
     owner: "root"
     mode: "0755"
     recurse: "no"
   when:
-    - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
-    - "hostvars[inventory_hostname]['netdata'] |
+    - "lookup('ansible.builtin.vars', 'netdata', default='')
+      not in ['', [], '[]', None]"
+    - "lookup('ansible.builtin.vars', 'netdata') |
        community.general.json_query(lookup('ansible.builtin.vars',
-      'netdata_allow_sudo', default='')) == 'true'"
+      '_netdata_allow_sudo', default='')) == 'true'"
   vars:
-    netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"
+    _netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"

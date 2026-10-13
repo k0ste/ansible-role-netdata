@@ -2,7 +2,7 @@
 {{ '# ' + ansible_managed }}
 {{ '# Do not edit manually' }}
 
-{% for e in lookup('ansible.builtin.vars', 'netdata_exporting_settings') %}
+{% for e in lookup('ansible.builtin.vars', '_netdata_exporting_settings') %}
 {% if e['global'] is defined and e['global'] not in ['', [], '[]', None] %}
 {{ '[exporting:global]' }}
 {% for eg in e['global'] %}

@@ -2,7 +2,7 @@
 - name: "netdata | Deploy conf.d/go.d/apcupsd.conf"
   ansible.builtin.template:
     src: "go.d/apcupsd.j2"
-    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] +
+    dest: "{{ lookup('ansible.builtin.vars', 'netdata_dest') +
       '/go.d/apcupsd.conf' }}"
     group: "root"
     owner: "root"

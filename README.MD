@@ -4,7 +4,7 @@ Role for deploy `netdata` packages and `netdata` configuration
 
 ## Requirements
 
-* Ansible 3.0.0+;
+* Ansible 9.0.0+;
 
 ## Extra
 
@@ -39,11 +39,13 @@ netdata:
   settings:
     - global:
         - hostname: 'example.com'
-    - db:
+      db:
         - memory_deduplication_(ksm): 'no'
-    - plugin:
+      plugin:
         - path: 'proc'
           /sys/class/infiniband: 'no'
+        - path: 'proc:/proc/stat'
+          per_cpu_core_utilization: 'yes'
         - path: 'proc:/proc/net/dev'
           bandwidth_for_all_interfaces: 'yes'
           packets_for_all_interfaces: 'yes'
@@ -53,98 +55,95 @@ netdata:
         - path: 'proc:/proc/diskstats'
           path_to_device_mapper: '/dev/null'
           performance_metrics_for_disks_with_major_253: 'yes'
-    - cloud:
+        - path: 'perf'
+          command_options: 'cycles instructions'
+      logs:
+        - daemon: 'journal'
+          debug: 'journal'
+          collector: 'journal'
+          access: 'journal'
+          health: 'journal'
+      cloud:
         - enabled: 'no'
-    - health:
+      health:
         - enabled: 'no'
-    - statsd:
+      statsd:
         - enabled: 'no'
+      ml:
+        - enabled: 'no'
+      web:
+        - bind_to: "{{ ansible_host }}"
+      host_labels: "{{ lookup('ansible.builtin.vars',
+        'netdata_settings_host_labels', default='') }}"
 # exporting.conf settings
-  - exporting_settings:
+      exporting_settings:
 # prometheus exporter settings
-      - prometheus:
+        - prometheus:
 # enable netdata meta labels
-          - send_automatic_labels: 'yes'
-# conf.d settings
-  - plugins_settings:
+            - send_automatic_labels: 'yes'
+      plugins_settings:
 # go.d plugin settings
-    - golang:
-        - local:
+        - golang:
+            - local:
 # This go.d modules will be explicity enabled or disabled
-            - modules:
-                - wireguard: 'no'
-                - nvme: 'no'
-                - prometheus: 'no'
+                - modules:
+                    - wireguard: 'no'
+                    - nvme: 'no'
+                    - prometheus: 'no'
 # The go.d/ping module (see documentation for supported options)
-          ping:
-            - name: 'inet'
-              privileged: true
-              hosts:
-                - '8.8.8.8'
-                - '1.1.1.1'
-            - name: 'telegram'
-              privileged: true
-              network: 'ipv4'
-              hosts:
-                - 'api.telegram.org'
+              ping:
+                - name: 'inet'
+                  privileged: true
+                  hosts:
+                    - '8.8.8.8'
+                    - '1.1.1.1'
+                - name: 'telegram'
+                  privileged: true
+                  network: 'ipv4'
+                  hosts:
+                    - 'api.telegram.org'
 # The go.d/x509check module (see documentation for supported options)
-          x509check:
-            - name: 'redhat.com'
-              source: 'file:///var/lib/lego/certificates/redhat.com.crt'
-              update_every: 600
-              autodetection_retry: 60
-              check_full_chain: yes
-            - name: 'ansible.com'
-              source: 'https://ansible.com:443'
+              x509check:
+                - name: 'redhat.com'
+                  source: 'file:///var/lib/lego/certificates/redhat.com.crt'
+                  update_every: 600
+                  autodetection_retry: 60
+                  check_full_chain: yes
+                - name: 'ansible.com'
+                  source: 'https://ansible.com:443'
 # The go.d/prometheus module (see documentation for supported options)
-          prometheus:
-            # Enable frr_exporter metrics (with our name)
-            - name: 'frr'
-              url: 'http://127.0.0.1:9342/metrics'
-              update_every: 10
-              autodetection_retry: 5
-            # Disable default auto-detection job (disable default -local name)
-            - name: 'frr_exporter_local'
-              url: 'http://127.0.0.1:999/metrics'
-              update_every: 1
-              autodetection_retry: 0
-            # Disable default auto-detection job (just disable this exporter)
-            - name: 'smartctl_exporter_local'
-              url: 'http://127.0.0.1:999/metrics'
-              update_every: 1
-              autodetection_retry: 0
+              prometheus:
+# Enable frr_exporter metrics (with our name)
+                - name: 'frr'
+                  url: 'http://127.0.0.1:9342/metrics'
+                  update_every: 10
+                  autodetection_retry: 5
+# Disable default auto-detection job (disable default -local name)
+                - name: 'frr_exporter_local'
+                  url: 'http://127.0.0.1:999/metrics'
+                  update_every: 1
+                  autodetection_retry: 0
+# Disable default auto-detection job (just disable this exporter)
+                - name: 'smartctl_exporter_local'
+                  url: 'http://127.0.0.1:999/metrics'
+                  update_every: 1
+                  autodetection_retry: 0
 # The go.d/storcli module (see documentation for supported options)
-          storcli:
-            - name: 'storcli'
-              update_every: 600
+              storcli:
+                - name: 'storcli'
+                  update_every: 600
 # The go.d/adaptec_raid module (see documentation for supported options)
-          adaptec_raid:
-            - name: 'adaptec_raid'
-              update_every: 600
+              adaptec_raid:
+                - name: 'adaptec_raid'
+                  update_every: 600
 # The go.d/apcupsd module (see documentation for supported options)
-          apcupsd:
-            - name: 'local'
-              address: '127.0.0.1:3551'
-            - name: 'remote'
-              address: '100.100.100.100:3551'
-              timeout: '3'
-              update_every: '1'
-              autodetection_retry: '0'
-              timeout: '2'
-# pyhond.d plugins settings
-      - python:
-# The python.d.conf 'local' settings. Settings will be merged with distro
-# python.d.conf
-          - local:
-# Enable / disable the whole python.d.plugin (all its modules)
-            enabled: 'yes'
-# Enable / Disable explicit garbage collection (full collection run). Default is
-# enabled
-            gc_run: 'yes'
-# Garbage collection interval in seconds. Default is 300
-            gc_interval: '300'
-# This python.d modules will be explicity enabled or disabled
-            modules:
-              - ceph: 'no'
-                samba: 'yes'
+              apcupsd:
+                - name: 'local'
+                  address: '127.0.0.1:3551'
+                - name: 'remote'
+                  address: '100.100.100.100:3551'
+                  timeout: '3'
+                  update_every: '1'
+                  autodetection_retry: '0'
+                  timeout: '2'
 ```

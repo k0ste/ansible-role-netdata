@@ -2,7 +2,7 @@
 {{ '# ' + ansible_managed }}
 {{ '# Do not edit manually' }}
 
-{% for n in lookup('ansible.builtin.vars', 'netdata_settings') %}
+{% for n in lookup('ansible.builtin.vars', '_netdata_settings') %}
 {% if n['global'] is defined and n['global'] not in ['', [], '[]', None] %}
 {{ '[global]' }}
 {% for ng in n['global'] %}

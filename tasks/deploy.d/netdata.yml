@@ -2,21 +2,22 @@
 - name: "netdata | Deploy Netdata configuration"
   ansible.builtin.template:
     src: "netdata.j2"
-    dest: "{{ hostvars[inventory_hostname]['netdata_dest'] + '/netdata.conf' }}"
+    dest: "{{ lookup('ansible.builtin.vars', 'netdata_dest') +
+      '/netdata.conf' }}"
     group: "root"
     owner: "root"
     mode: "0644"
     force: "yes"
   when:
-    - "lookup('ansible.builtin.vars', 'netdata_settings',
+    - "lookup('ansible.builtin.vars', '_netdata_settings',
       default='') not in ['', [], '[]', None]"
   notify:
     - "Restart netdata"
 - name: "netdata | Deploy Netdata service configuration"
   ansible.builtin.template:
     src: "netdata_service.j2"
-    dest: "{{ lookup('ansible.builtin.vars', 'netdata_systemd_dir') + '/' +
-      hostvars[inventory_hostname]['netdata_service'] + '.conf' }}"
+    dest: "{{ lookup('ansible.builtin.vars', '_netdata_systemd_dir') + '/' +
+      lookup('ansible.builtin.vars', 'netdata_service') + '.conf' }}"
     owner: "root"
     group: "root"
     mode: "0644"
@@ -24,22 +25,22 @@
     - "Daemon reload"
     - "Restart netdata"
   when:
-    - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
-    - "hostvars[inventory_hostname]['netdata'] |
+    - "lookup('ansible.builtin.vars', 'netdata', default='')
+      not in ['', [], '[]', None]"
+    - "lookup('ansible.builtin.vars', 'netdata') |
        community.general.json_query(lookup('ansible.builtin.vars',
-      'netdata_allow_sudo', default='')) == 'true'"
+      '_netdata_allow_sudo', default='')) == 'true'"
   vars:
-    netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"
+    _netdata_allow_sudo: "[] | map(&allow_sudo || 'false', @) | [0]"
 - name: "netdata | Enable netdata service"
   ansible.builtin.systemd:
-    name: "{{ hostvars[inventory_hostname]['netdata_service'] }}"
+    name: "{{ lookup('ansible.builtin.vars', 'netdata_service') }}"
     enabled: "yes"
   when:
-    - "hostvars[inventory_hostname]['netdata'] is defined"
-    - "hostvars[inventory_hostname]['netdata'] not in ['', [], '[]', None]"
-    - "hostvars[inventory_hostname]['netdata'] |
+    - "lookup('ansible.builtin.vars', 'netdata', default='')
+      not in ['', [], '[]', None]"
+    - "lookup('ansible.builtin.vars', 'netdata') |
        community.general.json_query(lookup('ansible.builtin.vars',
-      'netdata_enable', default='')) == 'true'"
+      '_netdata_enable', default='')) == 'true'"
   vars:
-    netdata_enable: "[] | map(&enable || 'false', @) | [0]"
+    _netdata_enable: "[] | map(&enable || 'false', @) | [0]"
